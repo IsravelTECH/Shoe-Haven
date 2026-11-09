@@ -1,136 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOE HAVEN - Your Cart</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="images/Logo.webp" type="image/x-icon">
-    <!-- Bootstrap Bundle JS (with Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOE HAVEN | Your Shopping Bag</title>
+  <link rel="icon" href="images/Logo.webp" type="image/x-icon">
+
+  <!-- Bootstrap 5.3 & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Kinetic Design System -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-     <!-- Header -->
-     <header>
-        <div class="logo-container">
-          <img src="images/Logo.webp" alt="Logo" class="logo">
-          <span class="shop-name">SHOE HAVEN</span>
-        </div>
-        <nav>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="product.html">Product</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="cart.html">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="checkout.html">Checkout</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="wishlist.html">Wishlist</a>
-            </li>            
-          </ul>
-        </nav>
-      </header>
-
-     
-    <!-- Main Content -->
-    <main class="container my-5">
-      <table class="table table-bordered">
-          <thead>
-              <tr>
-                  <th>Item</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                  <th>Action</th> <!-- Column for updating quantity -->
-              </tr>
-          </thead>
-          <tbody id="cart-items"></tbody>
-      </table>
-  
-      <div class="text-center">
-          <h4>Total Amount: $<span id="total-amount-display">0.00</span></h4>
-          <button class="btn btn-primary" id="proceed-to-checkout">Proceed to Checkout</button>
-          <button class="btn btn-danger" id="clear-cart">Clear Cart</button>
+  <!-- FLOATING GLASS HEADER DOCK -->
+  <header class="haven-header">
+    <div class="header-glass-dock">
+      <div class="brand-wrapper">
+        <a href="index.html" class="d-flex align-items-center gap-2">
+          <div class="brand-logo-glow">
+            <img src="images/Logo.webp" alt="Shoe Haven">
+          </div>
+          <span class="brand-title">SHOE HAVEN</span>
+        </a>
+        <span class="brand-tag">BAG</span>
       </div>
+
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-item-link">Home</a></li>
+          <li><a href="product.html" class="nav-item-link">Collection</a></li>
+          <li><a href="cart.html" class="nav-item-link active">Cart</a></li>
+          <li><a href="checkout.html" class="nav-item-link">Checkout</a></li>
+          <li><a href="wishlist.html" class="nav-item-link">Wishlist</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Icons -->
+      <div class="nav-actions">
+        <a href="wishlist.html" class="icon-btn" title="View Wishlist">
+          <i class="bi bi-heart"></i>
+          <span class="badge-pill wishlist-badge-count" style="display:none;">0</span>
+        </a>
+        <button class="icon-btn" onclick="HavenUI.openCartDrawer()" title="Open Bag">
+          <i class="bi bi-bag"></i>
+          <span class="badge-pill cart-badge-count" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CART HERO -->
+  <main class="container my-5">
+    <div class="text-center mb-5">
+      <div class="hero-chip mx-auto">
+        <span class="pulse-dot"></span> Reserved Drops
+      </div>
+      <h1 class="hero-title" style="font-size: clamp(2rem, 3.5vw, 3rem);">
+        Your <span class="gradient-text">Shopping Bag</span>
+      </h1>
+      <p class="hero-subtitle mx-auto">
+        Review your selected kinetic footwear before passing to express dispatch.
+      </p>
+    </div>
+
+    <!-- CART WORKSPACE -->
+    <div class="checkout-grid" id="cart-workspace">
+      
+      <!-- Cart Items List Column -->
+      <div class="checkout-panel" id="cart-list-panel">
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary border-opacity-25">
+          <h2 class="checkout-title mb-0">
+            <i class="bi bi-bag-check" style="color:var(--accent-cyan);"></i> Bag Items
+          </h2>
+          <button class="btn btn-sm btn-outline-danger" id="btn-clear-cart" onclick="clearFullCart()">
+            <i class="bi bi-trash3 me-1"></i> Clear All
+          </button>
+        </div>
+
+        <div id="cart-page-items" class="d-flex flex-column gap-3">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <div class="checkout-panel" style="height: fit-content;">
+        <h3 class="checkout-title">
+          <i class="bi bi-receipt" style="color:var(--accent-cyan);"></i> Order Summary
+        </h3>
+
+        <!-- Promo Code Input -->
+        <div class="mb-4">
+          <label class="form-label">Promotional Code</label>
+          <div class="d-flex gap-2">
+            <input type="text" id="promo-input" class="form-input" placeholder="e.g. HAVEN20">
+            <button class="btn-glass" onclick="applyPromoCode()">Apply</button>
+          </div>
+          <div id="promo-message" class="mt-1" style="font-size:0.8rem;"></div>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Items Subtotal</span>
+          <span id="page-subtotal">$0.00</span>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Shipping & Handling</span>
+          <span id="page-shipping">$15.00</span>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Estimated Sales Tax</span>
+          <span id="page-tax">$0.00</span>
+        </div>
+
+        <div class="cart-summary-line text-success" id="discount-row" style="display:none;">
+          <span>Discount (20% OFF)</span>
+          <span id="page-discount">-$0.00</span>
+        </div>
+
+        <hr style="border-color: var(--border-subtle); margin: 1.25rem 0;">
+
+        <div class="cart-total-line">
+          <span>Total Due</span>
+          <span id="page-total" style="color:var(--accent-cyan); font-size:1.6rem;">$0.00</span>
+        </div>
+
+        <div class="d-flex flex-column gap-2 mt-4">
+          <a href="checkout.html" class="btn-neon text-center justify-content-center py-3">
+            <span>Proceed to Checkout</span>
+            <i class="bi bi-shield-lock-fill"></i>
+          </a>
+          <a href="product.html" class="btn-glass text-center justify-content-center">
+            Continue Shopping
+          </a>
+        </div>
+
+        <!-- Security badges -->
+        <div class="d-flex justify-content-around mt-4 pt-3 border-top border-secondary border-opacity-25" style="color:var(--text-muted); font-size:0.8rem;">
+          <span><i class="bi bi-shield-check text-info me-1"></i> SSL Encrypted</span>
+          <span><i class="bi bi-truck text-info me-1"></i> Free Tracked Ship > $150</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div id="cart-page-empty" style="display:none; text-align:center; padding: 5rem 1rem;">
+      <i class="bi bi-bag-x" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem; display:block;"></i>
+      <h2 style="color:#fff; margin-bottom: 0.5rem;">Your Bag is Empty</h2>
+      <p style="color:var(--text-secondary); max-width: 480px; margin: 0 auto 2rem;">
+        You haven't added any futuristic kicks to your bag yet. Browse our curated collection and step into the future.
+      </p>
+      <a href="product.html" class="btn-neon">
+        <span>Explore Collection</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
   </main>
 
-<script>
-  const cartItemsContainer = document.getElementById('cart-items');
-const totalAmountElement = document.getElementById('total-amount-display');
+  <!-- LUXURY FOOTER -->
+  <footer class="haven-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <img src="images/Logo.webp" alt="Logo" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--accent-cyan);">
+          <span class="brand-title" style="font-size:1.2rem;">SHOE HAVEN</span>
+        </div>
+        <p>Merging futuristic design sensibilities with biomechanical excellence.</p>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="product.html">Full Catalog</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="wishlist.html">Saved Items</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="product.html#men">Men's Vanguard</a></li>
+          <li><a href="product.html#women">Women's Atelier</a></li>
+          <li><a href="product.html#kids">Junior Explorers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Atelier Care</h4>
+        <ul class="footer-links-list">
+          <li><a href="checkout.html">Express Checkout</a></li>
+          <li><a href="#">Size & Fit Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 Shoe Haven. All Rights Reserved.</span>
+    </div>
+  </footer>
 
-function loadCartItems() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    let totalAmount = 0;
-    cartItemsContainer.innerHTML = ''; // Clear existing cart items
+  <!-- MOBILE FLOATING GLASS DOCK (< 768px) -->
+  <nav class="mobile-bottom-dock">
+    <a href="index.html" class="mobile-dock-btn">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="product.html" class="mobile-dock-btn">
+      <i class="bi bi-grid"></i>
+      <span>Shop</span>
+    </a>
+    <a href="wishlist.html" class="mobile-dock-btn">
+      <i class="bi bi-heart"></i>
+      <span>Saved</span>
+      <span class="badge-pill wishlist-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </a>
+    <button class="mobile-dock-btn active" onclick="HavenUI.openCartDrawer()">
+      <i class="bi bi-bag"></i>
+      <span>Bag</span>
+      <span class="badge-pill cart-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </button>
+  </nav>
 
-    cartItems.forEach((item, index) => {
-        const totalItemPrice = item.price * item.quantity;
-        totalAmount += totalItemPrice;
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/app.js"></script>
 
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${item.name}</td>
-            <td>$${item.price.toFixed(2)}</td>
-            <td>
-                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-index="${index}">
-            </td>
-            <td>$${totalItemPrice.toFixed(2)}</td>
-            <td><button class="remove-item-btn" data-index="${index}">Remove</button></td>
-        `;
-        cartItemsContainer.appendChild(row);
+  <script>
+    let discountMultiplier = 0;
+
+    function renderPageCart() {
+      const itemsContainer = document.getElementById('cart-page-items');
+      const workspace = document.getElementById('cart-workspace');
+      const emptyView = document.getElementById('cart-page-empty');
+
+      if (!itemsContainer) return;
+
+      const cart = HavenStore.cart;
+
+      if (cart.length === 0) {
+        workspace.style.display = 'none';
+        emptyView.style.display = 'block';
+        return;
+      }
+
+      workspace.style.display = 'grid';
+      emptyView.style.display = 'none';
+
+      itemsContainer.innerHTML = cart.map((item, index) => `
+        <div class="cart-item-card" style="padding: 1.25rem;">
+          <img src="${item.image}" alt="${item.name}" class="cart-item-img" style="width: 90px; height: 90px;">
+          <div class="cart-item-info">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h4 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.25rem;">${item.name}</h4>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.65rem;">
+                  Size: <strong>US ${item.size || 9}</strong> • Standard Width
+                </div>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 800; color: #fff;">
+                $${(item.price * item.quantity).toFixed(2)}
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <div class="cart-qty-control">
+                <button class="btn-qty" onclick="HavenStore.updateCartQty(${index}, ${item.quantity - 1}); renderPageCart();">-</button>
+                <span class="cart-qty-num" style="font-size: 1rem; min-width: 24px;">${item.quantity}</span>
+                <button class="btn-qty" onclick="HavenStore.updateCartQty(${index}, ${item.quantity + 1}); renderPageCart();">+</button>
+                <span style="color:var(--text-muted); font-size:0.85rem; margin-left: 0.5rem;">($${item.price.toFixed(2)} each)</span>
+              </div>
+
+              <button class="btn-remove-item" onclick="HavenStore.removeFromCart(${index}); renderPageCart();" title="Remove Item">
+                <i class="bi bi-trash3 me-1"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Totals
+      const subtotal = HavenStore.getCartTotal();
+      const shipping = subtotal > 150 ? 0 : 15.00;
+      const tax = subtotal * 0.08; // 8% sales tax
+      const discount = subtotal * discountMultiplier;
+      const total = subtotal + shipping + tax - discount;
+
+      document.getElementById('page-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('page-shipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+      document.getElementById('page-tax').textContent = `$${tax.toFixed(2)}`;
+      
+      const discountRow = document.getElementById('discount-row');
+      if (discountMultiplier > 0) {
+        discountRow.style.display = 'flex';
+        document.getElementById('page-discount').textContent = `-$${discount.toFixed(2)}`;
+      } else {
+        discountRow.style.display = 'none';
+      }
+
+      document.getElementById('page-total').textContent = `$${total.toFixed(2)}`;
+    }
+
+    function clearFullCart() {
+      if (confirm('Are you sure you want to empty your entire bag?')) {
+        HavenStore.cart = [];
+        HavenStore.saveCart();
+        renderPageCart();
+        HavenUI.showToast('Bag cleared');
+      }
+    }
+
+    function applyPromoCode() {
+      const code = document.getElementById('promo-input').value.trim().toUpperCase();
+      const msg = document.getElementById('promo-message');
+
+      if (code === 'HAVEN20') {
+        discountMultiplier = 0.20;
+        msg.innerHTML = '<span class="text-success"><i class="bi bi-check-circle"></i> 20% discount coupon applied!</span>';
+        renderPageCart();
+      } else {
+        discountMultiplier = 0;
+        msg.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle"></i> Invalid promo code. Try "HAVEN20"</span>';
+        renderPageCart();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPageCart();
     });
 
-    totalAmountElement.textContent = totalAmount.toFixed(2);
-}
-
-// Handle Quantity Change
-cartItemsContainer.addEventListener('input', function(e) {
-    if (e.target.classList.contains('quantity-input')) {
-        const index = e.target.getAttribute('data-index');
-        const newQuantity = parseInt(e.target.value);
-        updateItemQuantity(index, newQuantity);
-    }
-});
-
-// Update the cart item quantity in localStorage
-function updateItemQuantity(index, quantity) {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const item = cartItems[index];
-    if (item) {
-        item.quantity = quantity; // Update quantity
-        localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Save updated cart
-        loadCartItems(); // Reload the cart to reflect changes
-    }
-}
-
-document.getElementById('proceed-to-checkout').addEventListener('click', () => {
-    window.location.href = 'checkout.html';
-});
-
-document.getElementById('clear-cart').addEventListener('click', () => {
-    localStorage.removeItem('cartItems');
-    cartItemsContainer.innerHTML = '';
-    totalAmountElement.textContent = '0.00';
-    alert('Cart cleared!');
-});
-
-loadCartItems();
-
-</script>
-
-
-    <footer>
-        <p>&copy; 2024 Shoe Haven. All Rights Reserved.</p>
-    </footer>
-
-    <script src="js/script.js"></script>
+    window.addEventListener('haven:cartUpdated', () => {
+      renderPageCart();
+    });
+  </script>
 </body>
 </html>

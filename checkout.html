@@ -1,144 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOE HAVEN - Checkout</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="images/Logo.webp" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOE HAVEN | Express Spatial Checkout</title>
+  <link rel="icon" href="images/Logo.webp" type="image/x-icon">
 
-    <!-- Bootstrap Bundle JS (with Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap 5.3 & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Kinetic Design System -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-     <!-- Header -->
-     <header>
-        <div class="logo-container">
-          <img src="images/Logo.webp" alt="Logo" class="logo">
-          <span class="shop-name">SHOE HAVEN</span>
-        </div>
-        <nav>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="product.html">Product</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="cart.html">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="checkout.html">Checkout</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="wishlist.html">Wishlist</a>
-            </li>            
-          </ul>
-        </nav>
-      </header>
+  <!-- FLOATING GLASS HEADER DOCK -->
+  <header class="haven-header">
+    <div class="header-glass-dock">
+      <div class="brand-wrapper">
+        <a href="index.html" class="d-flex align-items-center gap-2">
+          <div class="brand-logo-glow">
+            <img src="images/Logo.webp" alt="Shoe Haven">
+          </div>
+          <span class="brand-title">SHOE HAVEN</span>
+        </a>
+        <span class="brand-tag">CHECKOUT</span>
+      </div>
 
-<!-- Main Content -->
-<main class="container my-5">
-  <!-- Checkout Table -->
-  <div id="checkout-content">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody id="checkout-items"></tbody>
-    </table>
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-item-link">Home</a></li>
+          <li><a href="product.html" class="nav-item-link">Collection</a></li>
+          <li><a href="cart.html" class="nav-item-link">Cart</a></li>
+          <li><a href="checkout.html" class="nav-item-link active">Checkout</a></li>
+          <li><a href="wishlist.html" class="nav-item-link">Wishlist</a></li>
+        </ul>
+      </nav>
 
-    <div class="text-center">
-        <h4>Total Amount: $<span id="total-amount-display">0.00</span></h4>
-        <button class="btn btn-primary" id="finalize-order">Finalize Order</button>
+      <!-- Action Icons -->
+      <div class="nav-actions">
+        <a href="wishlist.html" class="icon-btn" title="View Wishlist">
+          <i class="bi bi-heart"></i>
+          <span class="badge-pill wishlist-badge-count" style="display:none;">0</span>
+        </a>
+        <button class="icon-btn" onclick="HavenUI.openCartDrawer()" title="Open Bag">
+          <i class="bi bi-bag"></i>
+          <span class="badge-pill cart-badge-count" style="display:none;">0</span>
+        </button>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Success Message -->
-  <div id="order-success" class="text-center" style="display: none;">
-    <h3>Your order has been successfully submitted!</h3>
-    <p>Thank you for shopping with us. You will receive a confirmation email shortly.</p>
-    <button class="btn btn-success" onclick="window.location.href='index.html'">Go to Home</button>
-  </div>
-</main>
+  <!-- MAIN CHECKOUT SECTION -->
+  <main class="checkout-wrapper">
+    <div class="text-center mb-5">
+      <div class="hero-chip mx-auto">
+        <span class="pulse-dot"></span> 256-Bit Encrypted Transaction
+      </div>
+      <h1 class="hero-title" style="font-size: clamp(2rem, 3.5vw, 3rem);">
+        Express <span class="gradient-text">Spatial Checkout</span>
+      </h1>
+      <p class="hero-subtitle mx-auto">
+        Complete your order with instant dispatch priority and real-time package telemetry.
+      </p>
+    </div>
 
-<script>
-  const checkoutItemsContainer = document.getElementById('checkout-items');
-  const totalAmountElement = document.getElementById('total-amount-display');
-  const checkoutContent = document.getElementById('checkout-content');
-  const orderSuccess = document.getElementById('order-success');
+    <!-- Active Checkout Form -->
+    <div class="checkout-grid" id="checkout-workspace">
+      
+      <!-- Shipping & Payment Form Column -->
+      <div class="checkout-panel">
+        
+        <!-- Step 1: Shipping Details -->
+        <h3 class="checkout-title">
+          <i class="bi bi-geo-alt" style="color:var(--accent-cyan);"></i> 1. Shipping Destination
+        </h3>
 
-  function loadCheckoutItems() {
-      const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-      let totalAmount = 0;
+        <div class="form-row-2">
+          <div class="form-floating-group">
+            <label class="form-label">First Name</label>
+            <input type="text" id="ship-first" class="form-input" placeholder="Alexander" required>
+          </div>
+          <div class="form-floating-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" id="ship-last" class="form-input" placeholder="Vance" required>
+          </div>
+        </div>
 
-      cartItems.forEach(item => {
-          const totalItemPrice = item.price * item.quantity;
-          totalAmount += totalItemPrice;
+        <div class="form-floating-group">
+          <label class="form-label">Email Address (for tracking)</label>
+          <input type="email" id="ship-email" class="form-input" placeholder="alexander@domain.com" required>
+        </div>
 
-          const row = document.createElement('tr');
-          row.innerHTML = `
-              <td>${item.name}</td>
-              <td>$${item.price.toFixed(2)}</td>
-              <td>${item.quantity}</td>
-              <td>$${totalItemPrice.toFixed(2)}</td>
-          `;
-          checkoutItemsContainer.appendChild(row);
+        <div class="form-floating-group">
+          <label class="form-label">Street Address</label>
+          <input type="text" id="ship-address" class="form-input" placeholder="742 Evergreen Promenade, Suite 400" required>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-floating-group">
+            <label class="form-label">City</label>
+            <input type="text" id="ship-city" class="form-input" placeholder="San Francisco" required>
+          </div>
+          <div class="form-floating-group">
+            <label class="form-label">Postal / ZIP Code</label>
+            <input type="text" id="ship-zip" class="form-input" placeholder="94107" required>
+          </div>
+        </div>
+
+        <hr style="border-color: var(--border-subtle); margin: 2rem 0;">
+
+        <!-- Step 2: 3D Holographic Card & Payment -->
+        <h3 class="checkout-title">
+          <i class="bi bi-credit-card-2-front" style="color:var(--accent-cyan);"></i> 2. Payment Method
+        </h3>
+
+        <!-- Interactive 3D Card Simulator -->
+        <div class="credit-card-3d-box">
+          <div class="card-flipper" id="card-preview">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="card-chip"></div>
+              <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:0.1em; color:var(--accent-cyan);">HAVEN PASS</span>
+            </div>
+            <div class="card-number-display" id="card-preview-number">•••• •••• •••• ••••</div>
+            <div class="card-foot-display">
+              <div>
+                <div style="font-size:0.65rem; color:var(--text-muted);">CARDHOLDER</div>
+                <div class="card-holder-name" id="card-preview-name">YOUR NAME</div>
+              </div>
+              <div>
+                <div style="font-size:0.65rem; color:var(--text-muted);">EXPIRES</div>
+                <div class="card-holder-name" id="card-preview-exp">MM/YY</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Input Fields -->
+        <div class="form-floating-group">
+          <label class="form-label">Card Number</label>
+          <input type="text" id="card-number-input" class="form-input" placeholder="4242 4242 4242 4242" maxlength="19">
+        </div>
+
+        <div class="form-floating-group">
+          <label class="form-label">Name on Card</label>
+          <input type="text" id="card-name-input" class="form-input" placeholder="ALEXANDER VANCE">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-floating-group">
+            <label class="form-label">Expiry (MM/YY)</label>
+            <input type="text" id="card-exp-input" class="form-input" placeholder="12/28" maxlength="5">
+          </div>
+          <div class="form-floating-group">
+            <label class="form-label">Security Code (CVV)</label>
+            <input type="password" id="card-cvv-input" class="form-input" placeholder="•••" maxlength="4">
+          </div>
+        </div>
+
+        <button class="btn-neon w-100 justify-content-center py-3 mt-4" onclick="submitFinalOrder()">
+          <i class="bi bi-lock-fill"></i> Complete Authorization
+        </button>
+      </div>
+
+      <!-- Right Column: Order Review Summary -->
+      <div class="checkout-panel" style="height: fit-content;">
+        <h3 class="checkout-title">
+          <i class="bi bi-cart3" style="color:var(--accent-cyan);"></i> Items in Dispatch
+        </h3>
+
+        <div id="checkout-items-list" class="d-flex flex-column gap-3 mb-4 max-h-300" style="max-height: 340px; overflow-y: auto;">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Subtotal</span>
+          <span id="co-subtotal">$0.00</span>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Priority Courier Shipping</span>
+          <span id="co-shipping">$15.00</span>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Estimated Sales Tax (8%)</span>
+          <span id="co-tax">$0.00</span>
+        </div>
+
+        <hr style="border-color: var(--border-subtle); margin: 1.25rem 0;">
+
+        <div class="cart-total-line">
+          <span>Grand Total</span>
+          <span id="co-total" style="color:var(--accent-cyan); font-size:1.6rem;">$0.00</span>
+        </div>
+
+        <div class="p-3 mt-3 rounded" style="background: rgba(0, 240, 255, 0.05); border: 1px dashed rgba(0, 240, 255, 0.3);">
+          <div class="d-flex align-items-center gap-2 mb-1" style="color:var(--accent-cyan); font-weight:700; font-size:0.85rem;">
+            <i class="bi bi-patch-check-fill"></i> Authenticity Verified
+          </div>
+          <p style="color:var(--text-secondary); font-size:0.8rem; margin:0;">
+            Every pair is inspect-stamped and packaged in climate-controlled anti-crease boxes.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Success Message Panel -->
+    <div id="order-success-screen" style="display:none; text-align:center; padding: 4rem 1.5rem; max-width: 600px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: var(--radius-lg); box-shadow: 0 0 50px var(--accent-cyan-glow);">
+      <div style="width: 80px; height: 80px; background: rgba(0, 240, 255, 0.15); border: 2px solid var(--accent-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem; color: var(--accent-cyan); box-shadow: 0 0 25px var(--accent-cyan);">
+        <i class="bi bi-check2"></i>
+      </div>
+      <span class="badge-tag mb-2">ORDER CONFIRMED</span>
+      <h2 style="color:#fff; font-size: 2rem; margin-bottom: 0.5rem;">Order Telemetry Dispatched!</h2>
+      <p style="color:var(--text-secondary); line-height:1.6; margin-bottom: 1.5rem;">
+        Thank you for purchasing with <strong>Shoe Haven</strong>. Your bespoke order reference is <strong id="order-ref-num" style="color:var(--accent-cyan);">HAVEN-94281</strong>. An encrypted confirmation email has been dispatched.
+      </p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="index.html" class="btn-neon">
+          <i class="bi bi-house-door"></i> Return to Home
+        </a>
+        <a href="product.html" class="btn-glass">
+          Explore Drops
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- LUXURY FOOTER -->
+  <footer class="haven-footer">
+    <div class="footer-bottom-bar text-center justify-content-center">
+      <span>&copy; 2026 Shoe Haven. All Rights Reserved. Verified 256-Bit SSL Secured.</span>
+    </div>
+  </footer>
+
+  <!-- MOBILE FLOATING GLASS DOCK (< 768px) -->
+  <nav class="mobile-bottom-dock">
+    <a href="index.html" class="mobile-dock-btn">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="product.html" class="mobile-dock-btn">
+      <i class="bi bi-grid"></i>
+      <span>Shop</span>
+    </a>
+    <a href="wishlist.html" class="mobile-dock-btn">
+      <i class="bi bi-heart"></i>
+      <span>Saved</span>
+    </a>
+    <button class="mobile-dock-btn active" onclick="HavenUI.openCartDrawer()">
+      <i class="bi bi-bag"></i>
+      <span>Bag</span>
+      <span class="badge-pill cart-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </button>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    function renderCheckoutReview() {
+      const list = document.getElementById('checkout-items-list');
+      if (!list) return;
+
+      const cart = HavenStore.cart;
+      if (cart.length === 0) {
+        list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No items in cart to checkout.</p>`;
+        return;
+      }
+
+      list.innerHTML = cart.map(item => `
+        <div class="d-flex align-items-center gap-3 p-2 rounded" style="background:rgba(255,255,255,0.03);">
+          <img src="${item.image}" alt="${item.name}" style="width: 55px; height: 55px; object-fit: cover; border-radius: var(--radius-sm);">
+          <div class="flex-fill">
+            <div style="font-size: 0.9rem; font-weight: 600; color: #fff;">${item.name}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Qty: ${item.quantity} • US ${item.size || 9}</div>
+          </div>
+          <div style="font-weight: 700; color: var(--accent-cyan);">
+            $${(item.price * item.quantity).toFixed(2)}
+          </div>
+        </div>
+      `).join('');
+
+      const subtotal = HavenStore.getCartTotal();
+      const shipping = subtotal > 150 ? 0 : 15.00;
+      const tax = subtotal * 0.08;
+      const total = subtotal + shipping + tax;
+
+      document.getElementById('co-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('co-shipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+      document.getElementById('co-tax').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('co-total').textContent = `$${total.toFixed(2)}`;
+    }
+
+    // 3D Card Simulator Mirroring
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCheckoutReview();
+
+      const numInput = document.getElementById('card-number-input');
+      const nameInput = document.getElementById('card-name-input');
+      const expInput = document.getElementById('card-exp-input');
+
+      numInput.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/\D/g, '').substring(0, 16);
+        val = val != '' ? val.match(/.{1,4}/g).join(' ') : '';
+        e.target.value = val;
+        document.getElementById('card-preview-number').textContent = val || '•••• •••• •••• ••••';
       });
 
-      totalAmountElement.textContent = totalAmount.toFixed(2);
-  }
+      nameInput.addEventListener('input', (e) => {
+        document.getElementById('card-preview-name').textContent = e.target.value.toUpperCase() || 'YOUR NAME';
+      });
 
-  // Finalize order by sending cart details to the server
-  document.getElementById('finalize-order').addEventListener('click', async () => {
-      const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-      const totalAmount = parseFloat(totalAmountElement.textContent);
+      expInput.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+        if (val.length >= 2) val = val.substring(0, 2) + '/' + val.substring(2, 4);
+        e.target.value = val;
+        document.getElementById('card-preview-exp').textContent = val || 'MM/YY';
+      });
+    });
 
-      if (cartItems.length === 0) {
-          alert("No items in the cart!");
-          return;
+    function submitFinalOrder() {
+      const cart = HavenStore.cart;
+      if (cart.length === 0) {
+        alert('Your bag is currently empty.');
+        return;
       }
 
-      try {
-          // Send data to the backend API for order processing
-          const response = await fetch("http://localhost:5000/checkout", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ items: cartItems, totalAmount }),
-          });
+      // Generate random order id
+      const refId = 'HAVEN-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('order-ref-num').textContent = refId;
 
-          const data = await response.json();
+      // Hide workspace, show success
+      document.getElementById('checkout-workspace').style.display = 'none';
+      document.getElementById('order-success-screen').style.display = 'block';
 
-          if (response.ok) {
-              // Order successfully placed, hide the checkout table and show success message
-              checkoutContent.style.display = 'none';  // Hide checkout content
-              orderSuccess.style.display = 'block';   // Show success message
-              localStorage.removeItem('cartItems');   // Clear cart after successful order
-          } else {
-              alert("Error: " + data.message);
-          }
-      } catch (error) {
-          console.error("Checkout Error:", error);
-          alert("Something went wrong. Try again.");
-      }
-  });
-
-  // Load cart items on page load
-  loadCheckoutItems();
-</script>
-
-    <script src="js/script.js"></script>
-    
-    <footer class="text-center mt-5">
-      <p>&copy; 2024 Shoe Haven. All Rights Reserved.</p>
-  </footer>
+      // Clear cart
+      HavenStore.cart = [];
+      HavenStore.saveCart();
+    }
+  </script>
 </body>
 </html>

@@ -1,93 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOE HAVEN - Wishlist</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="images/Logo.webp" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOE HAVEN | Your Saved Wishlist</title>
+  <link rel="icon" href="images/Logo.webp" type="image/x-icon">
+
+  <!-- Bootstrap 5.3 & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Kinetic Design System -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="logo-container">
-          <img src="images/Logo.webp" alt="Logo" class="logo">
-          <span class="shop-name">SHOE HAVEN</span>
-        </div>
-        <nav>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="product.html">Product</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="cart.html">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="wishlist.html">Wishlist</a>
-            </li>
-          </ul>
-        </nav>
-    </header>
+  <!-- FLOATING GLASS HEADER DOCK -->
+  <header class="haven-header">
+    <div class="header-glass-dock">
+      <div class="brand-wrapper">
+        <a href="index.html" class="d-flex align-items-center gap-2">
+          <div class="brand-logo-glow">
+            <img src="images/Logo.webp" alt="Shoe Haven">
+          </div>
+          <span class="brand-title">SHOE HAVEN</span>
+        </a>
+        <span class="brand-tag">SAVED</span>
+      </div>
 
-    <!-- Wishlist Content -->
-    <main class="container my-5">
-        <h2 class="text-center">My Wishlist</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="wishlist-items"></tbody>
-        </table>
-    </main>
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-item-link">Home</a></li>
+          <li><a href="product.html" class="nav-item-link">Collection</a></li>
+          <li><a href="cart.html" class="nav-item-link">Cart</a></li>
+          <li><a href="checkout.html" class="nav-item-link">Checkout</a></li>
+          <li><a href="wishlist.html" class="nav-item-link active">Wishlist</a></li>
+        </ul>
+      </nav>
 
-    <script>
-        const wishlistContainer = document.getElementById('wishlist-items');
+      <!-- Action Icons -->
+      <div class="nav-actions">
+        <a href="wishlist.html" class="icon-btn" title="View Wishlist">
+          <i class="bi bi-heart" style="color:var(--accent-pink);"></i>
+          <span class="badge-pill wishlist-badge-count" style="display:none;">0</span>
+        </a>
+        <button class="icon-btn" onclick="HavenUI.openCartDrawer()" title="Open Bag">
+          <i class="bi bi-bag"></i>
+          <span class="badge-pill cart-badge-count" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-        function loadWishlistItems() {
-            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-            wishlistContainer.innerHTML = '';
+  <!-- WISHLIST HERO -->
+  <main class="catalog-section">
+    <div class="text-center mb-5">
+      <div class="hero-chip mx-auto">
+        <span class="pulse-dot"></span> Curated Favorites
+      </div>
+      <h1 class="hero-title" style="font-size: clamp(2rem, 3.5vw, 3rem);">
+        Your <span class="gradient-text">Saved Wishlist</span>
+      </h1>
+      <p class="hero-subtitle mx-auto">
+        Keep track of your dream pairs and effortlessly transfer them into your bag when ready.
+      </p>
+    </div>
 
-            wishlist.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>$${item.price.toFixed(2)}</td>
-                    <td><button class="btn btn-danger btn-sm remove-wishlist" data-product="${item.name}">Remove</button></td>
-                `;
-                wishlistContainer.appendChild(row);
-            });
+    <!-- Dynamic Wishlist Grid -->
+    <div class="products-grid" id="wishlist-grid">
+      <!-- Injected via JavaScript -->
+    </div>
 
-            // Attach event listeners for removing items
-            document.querySelectorAll('.remove-wishlist').forEach(button => {
-                button.addEventListener('click', () => {
-                    const product = button.getAttribute('data-product');
-                    removeFromWishlist(product);
-                });
-            });
-        }
+    <!-- Empty State -->
+    <div id="wishlist-empty-state" style="display:none; text-align:center; padding: 5rem 1rem;">
+      <div style="width: 80px; height: 80px; background: rgba(236, 72, 153, 0.1); border: 2px solid var(--accent-pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem; color: var(--accent-pink);">
+        <i class="bi bi-heart"></i>
+      </div>
+      <h2 style="color:#fff; margin-bottom: 0.5rem;">Your Wishlist is Empty</h2>
+      <p style="color:var(--text-secondary); max-width: 480px; margin: 0 auto 2rem;">
+        Click the heart icon on any footwear in our collection to save it for later.
+      </p>
+      <a href="product.html" class="btn-neon">
+        <span>Explore Footwear</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </main>
 
-        function removeFromWishlist(productName) {
-            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-            wishlist = wishlist.filter(item => item.name !== productName);
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            loadWishlistItems();
-        }
+  <!-- LUXURY FOOTER -->
+  <footer class="haven-footer">
+    <div class="footer-bottom-bar text-center justify-content-center">
+      <span>&copy; 2026 Shoe Haven. All Rights Reserved.</span>
+    </div>
+  </footer>
 
-        loadWishlistItems();
-    </script>
+  <!-- MOBILE FLOATING GLASS DOCK (< 768px) -->
+  <nav class="mobile-bottom-dock">
+    <a href="index.html" class="mobile-dock-btn">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="product.html" class="mobile-dock-btn">
+      <i class="bi bi-grid"></i>
+      <span>Shop</span>
+    </a>
+    <a href="wishlist.html" class="mobile-dock-btn active">
+      <i class="bi bi-heart"></i>
+      <span>Saved</span>
+      <span class="badge-pill wishlist-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </a>
+    <button class="mobile-dock-btn" onclick="HavenUI.openCartDrawer()">
+      <i class="bi bi-bag"></i>
+      <span>Bag</span>
+      <span class="badge-pill cart-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </button>
+  </nav>
 
-    <footer class="text-center mt-5">
-        <p>&copy; 2024 Shoe Haven. All Rights Reserved.</p>
-    </footer>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/app.js"></script>
 
+  <script>
+    function renderWishlistPage() {
+      const grid = document.getElementById('wishlist-grid');
+      const emptyView = document.getElementById('wishlist-empty-state');
+      if (!grid) return;
+
+      const wishlist = HavenStore.wishlist;
+
+      if (wishlist.length === 0) {
+        grid.style.display = 'none';
+        emptyView.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      emptyView.style.display = 'none';
+
+      grid.innerHTML = wishlist.map((item, index) => {
+        // Resolve catalog item if exists
+        const catalogItem = window.SHOE_CATALOG ? window.SHOE_CATALOG.find(p => p.name === item.name) : null;
+        const shoe = catalogItem || item;
+
+        return `
+          <div class="shoe-card">
+            <div class="card-top-badges">
+              <span class="badge-tag" style="background:rgba(236,72,153,0.12); color:var(--accent-pink); border-color:var(--accent-pink);">SAVED</span>
+              <button class="btn-wishlist-toggle in-wishlist" onclick="removeWishlistItem('${item.name}')" title="Remove from wishlist">
+                <i class="bi bi-heart-fill"></i>
+              </button>
+            </div>
+
+            <div class="card-image-box">
+              <img src="${shoe.image || 'images/Logo.webp'}" alt="${shoe.name}" class="card-shoe-img">
+            </div>
+
+            <div>
+              <div class="card-meta-line">
+                <span class="shoe-category-tag">${shoe.gender ? shoe.gender + "'s • " + (shoe.category || '') : 'Bespoke'}</span>
+                <span class="shoe-rating"><i class="bi bi-star-fill"></i> ${shoe.rating || 4.9}</span>
+              </div>
+              <h3 class="shoe-title" title="${shoe.name}">${shoe.name}</h3>
+              <div class="card-foot-pricing">
+                <span class="shoe-price">$${shoe.price.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div class="card-action-bar">
+              <button class="btn-add-cart" onclick="moveToBag(${JSON.stringify(shoe).replace(/"/g, '&quot;')})">
+                <i class="bi bi-bag-plus"></i> Move to Bag
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function removeWishlistItem(name) {
+      HavenStore.wishlist = HavenStore.wishlist.filter(item => item.name !== name);
+      HavenStore.saveWishlist();
+      renderWishlistPage();
+      HavenUI.showToast(`Removed from wishlist`);
+    }
+
+    function moveToBag(shoe) {
+      HavenStore.addToCart(shoe);
+      removeWishlistItem(shoe.name);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlistPage();
+    });
+
+    window.addEventListener('haven:wishlistUpdated', () => {
+      renderWishlistPage();
+    });
+  </script>
 </body>
 </html>

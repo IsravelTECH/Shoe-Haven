@@ -1,187 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOE HAVEN - Home</title>
-    <link rel="icon" href="images/Logo.webp" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOE HAVEN | Kinetic 3D Atelier & Luxury Footwear</title>
+  <link rel="icon" href="images/Logo.webp" type="image/x-icon">
 
-    <!-- Bootstrap CSS -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-   <!-- Bootstrap Bundle JS (with Popper) -->
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap 5.3 & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+  <!-- Three.js (3D WebGL Engine) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Custom Kinetic Design System -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <header>
-    <div class="logo-container">
-      <img src="images/Logo.webp" alt="Logo" class="logo">
-      <span class="shop-name">SHOE HAVEN</span>
-    </div>
-    <nav>
-      <ul class="nav justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="product.html">Product</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cart.html">Cart</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="checkout.html">Checkout</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="wishlist.html">Wishlist</a>
-        </li>  
-      </ul>
-    </nav>
-</header>
-  
-
-      <section class="hero-banner">
-        <video autoplay muted loop class="hero-video">
-            <source src="images/Shoe img/4380323-hd_1080_1920_30fps.mp4" type="video/mp4">
-        </video>
-        <div class="hero-content">
-            <h1>Welcome to Your Shop</h1>
-            <p>Discover the best shoes for every occasion</p>
-            <a href="product.html" class="btn">Shop Now</a>
-        </div>
-    </section>
-  
-    
-<section class="categories-section">
-  <h2 class="text-center mb-5">Shop by Category</h2>
-  <!-- Men's Section -->
-  <div class="category-group">
-    <h3 class="text-center mb-4">Men's Categories</h3>
-    <div class="row justify-content-center">
-      <!--Casual-->
-      <div class="col-md-3">
-        <div class="category-card text-center">
-            <img src="images/Category/Men's Category/Men's Causal/Causal Mens.jpg" alt="Men's Casual Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Casual</h5>
-            <a href="product.html#productSection" class="btn btn-primary btn-sm">Shop Now</a>
-        </div>
-    </div>
-
-         <!-- Formal -->
-         <div class="col-md-3">
-          <div class="category-card text-center">
-              <img src="images/Category/Men's Category/Men's Formal/Formal Mens.jpg" alt="Men's Formal Shoes" class="img-fluid category-image">
-              <h5 class="mt-3">Formal</h5>
-              <a href="product.html#category=formal" class="btn btn-primary btn-sm">Shop Now</a>
+  <!-- FLOATING GLASS HEADER DOCK -->
+  <header class="haven-header">
+    <div class="header-glass-dock">
+      <div class="brand-wrapper">
+        <a href="index.html" class="d-flex align-items-center gap-2">
+          <div class="brand-logo-glow">
+            <img src="images/Logo.webp" alt="Shoe Haven">
           </div>
+          <span class="brand-title">SHOE HAVEN</span>
+        </a>
+        <span class="brand-tag">3D EDITION</span>
       </div>
+
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-item-link active">Home</a></li>
+          <li><a href="product.html" class="nav-item-link">Collection</a></li>
+          <li><a href="product.html#men" class="nav-item-link">Men</a></li>
+          <li><a href="product.html#women" class="nav-item-link">Women</a></li>
+          <li><a href="product.html#kids" class="nav-item-link">Kids</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Icons -->
+      <div class="nav-actions">
+        <a href="wishlist.html" class="icon-btn" title="View Wishlist">
+          <i class="bi bi-heart"></i>
+          <span class="badge-pill wishlist-badge-count" style="display:none;">0</span>
+        </a>
+        <button class="icon-btn" onclick="HavenUI.openCartDrawer()" title="Open Bag">
+          <i class="bi bi-bag"></i>
+          <span class="badge-pill cart-badge-count" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3D KINETIC HERO SECTION -->
+  <section class="hero-stage">
+    <div class="hero-backdrop-glow"></div>
+    <div class="hero-grid">
       
-      <!-- Sports -->
-      <div class="col-md-3">
-        <div class="category-card text-center">
-          <img src="images/Category/Men's Category/Men's Sports/Sports Mens.jpg" alt="Men's Sports Shoes" class="img-fluid category-image">
-          <h5 class="mt-3">Sports</h5>
-          <a href="product.html#Sports-shoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
+      <!-- Text & Value Prop -->
+      <div class="hero-text-content">
+        <div class="hero-chip">
+          <span class="pulse-dot"></span> Next-Gen Ergonomics & Design
+        </div>
+        <h1 class="hero-title">
+          Step into the <br>
+          <span class="gradient-text">Future of Motion</span>
+        </h1>
+        <p class="hero-subtitle">
+          Experience spatial 3D footwear architecture engineered with nitrogen-infused kinetic foam and aerospace-grade lightweight mesh.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="product.html" class="btn-neon">
+            <span>Explore Drops</span>
+            <i class="bi bi-arrow-right"></i>
+          </a>
+          <button class="btn-glass" onclick="HavenUI.openCartDrawer()">
+            <i class="bi bi-bag-plus"></i> Quick Bag
+          </button>
         </div>
       </div>
 
-      <!-- Party -->
-      <div class="col-md-3">
-        <div class="category-card text-center">
-          <img src="images/Category/Men's Category/Men's Formal/Formal 4.jpg" alt="Men's Party Shoes" class="img-fluid category-image">
-          <h5 class="mt-3">Party</h5>
-          <a href="product.html#Party-shoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
+      <!-- 3D Interactive WebGL Sneaker Canvas -->
+      <div class="hero-3d-wrapper">
+        <div id="three-canvas-container"></div>
+
+        <!-- Colorway Selector Swatches -->
+        <div class="model-color-swatches" title="Select Colorway">
+          <div class="color-swatch-dot active" data-color="#00F0FF" style="background:#00F0FF;" title="Cyber Cyan"></div>
+          <div class="color-swatch-dot" data-color="#FF6B00" style="background:#FF6B00;" title="Solar Amber"></div>
+          <div class="color-swatch-dot" data-color="#8B5CF6" style="background:#8B5CF6;" title="Neon Violet"></div>
+          <div class="color-swatch-dot" data-color="#10B981" style="background:#10B981;" title="Emerald Pulse"></div>
+        </div>
+
+        <div class="model-controls-badge">
+          <i class="bi bi-arrows-move"></i> Drag to Rotate 360° • Interactive Lighting
         </div>
       </div>
-    </div>
-  </div>
-  
-    <!-- Women's Section -->
-    <div class="category-group mt-5">
-      <h3 class="text-center mb-4">Women's Categories</h3>
-      <div class="row justify-content-center">
-        <!-- Casual -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Womens Category/Women Causal/Causal Womens.jpg" alt="Women's Casual Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Casual</h5>
-            <a href="product.html#Causalshoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Formal -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Womens Category/Women Formals/Formals Women.jpg" alt="Women's Formal Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Formal</h5>
-            <a href="product.html#Formalshoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Sports -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Womens Category/Women Sports/Sports Women.jpg" alt="Women's Sports Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Sports</h5>
-            <a href="product.html#Sportshoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Party -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Womens Category/Women Formals/Womens Formal 4.jpg" alt="Women's Party Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Party</h5>
-            <a href="product.html#Partyshoes" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Kids' Section -->
-    <div class="category-group mt-5">
-      <h3 class="text-center mb-4">Kid's Categories</h3>
-      <div class="row justify-content-center">
-        <!-- Casual -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Kids Category/Kid's Formal/Formal (1).jpg" alt="Kids' Casual Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Casual</h5>
-            <a href="product.html#Kidscasual" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Formal -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Kids Category/Kid's Formal/Formals kids.jpg" alt="Kids' Formal Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Formal</h5>
-            <a href="product.html#Kidsformal" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Sports -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Kids Category/Kid's Sports/Sports (3).jpg" alt="Kids' Sports Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Sports</h5>
-            <a href="product.html#Kidssports" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-        <!-- Party -->
-        <div class="col-md-3">
-          <div class="category-card text-center">
-            <img src="images/Category/Kids Category/Kid's Party/Party (5).jpg" alt="Kids' Party Shoes" class="img-fluid category-image">
-            <h5 class="mt-3">Party</h5>
-            <a href="product.html#Kidsparty" class="btn btn-primary btn-sm mt-2">Shop Now</a>
-          </div>
-        </div>
-      </div>
+
     </div>
   </section>
-  
 
-    <footer>
-        <p>&copy; 2024 Shoe Haven. All Rights Reserved.</p>
-    </footer>
+  <!-- LIVE MARQUEE TICKER -->
+  <section class="haven-ticker-bar">
+    <div class="ticker-track">
+      <span class="ticker-item"><i class="bi bi-lightning-charge-fill"></i> NITROGEN KINETIC CORE</span>
+      <span class="ticker-item"><i class="bi bi-shield-check"></i> 100% SATISFACTION GUARANTEED</span>
+      <span class="ticker-item"><i class="bi bi-globe-americas"></i> WORLDWIDE EXPRESS DISPATCH</span>
+      <span class="ticker-item"><i class="bi bi-fingerprint"></i> ERGONOMIC ARCH BIOMECHANICS</span>
+      <span class="ticker-item"><i class="bi bi-gem"></i> ITALIAN FULL-GRAIN LEATHER</span>
+      <span class="ticker-item"><i class="bi bi-arrow-repeat"></i> 30-DAY HASSLE-FREE RETURNS</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item"><i class="bi bi-lightning-charge-fill"></i> NITROGEN KINETIC CORE</span>
+      <span class="ticker-item"><i class="bi bi-shield-check"></i> 100% SATISFACTION GUARANTEED</span>
+      <span class="ticker-item"><i class="bi bi-globe-americas"></i> WORLDWIDE EXPRESS DISPATCH</span>
+    </div>
+  </section>
 
-    <script src="js/script.js"></script>
+  <!-- CATEGORIES BENTO GRID -->
+  <section class="categories-bento-section">
+    <div class="section-head">
+      <div class="section-subhead">Precision Curated</div>
+      <h2 class="section-title">Architected for Every Stride</h2>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Men's Collection -->
+      <a href="product.html#men" class="bento-card">
+        <img src="images/Category/Men's Category/Men's Sports/Sports Mens.jpg" alt="Men's Footwear" class="bento-card-bg">
+        <div class="bento-card-content">
+          <span class="badge-tag mb-2" style="width:fit-content;">MEN'S LAB</span>
+          <h3 class="bento-card-title">Men's Vanguard</h3>
+          <p class="bento-card-desc">Casual loafers, Goodyear-welted oxfords, and high-rebound sports trainers.</p>
+          <span class="text-info fw-bold" style="font-size:0.9rem;">Browse Collection <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Women's Collection -->
+      <a href="product.html#women" class="bento-card">
+        <img src="images/Category/Womens Category/Women Sports/Sports Women.jpg" alt="Women's Footwear" class="bento-card-bg">
+        <div class="bento-card-content">
+          <span class="badge-tag mb-2" style="width:fit-content; background:rgba(236,72,153,0.15); color:var(--accent-pink); border-color:var(--accent-pink);">WOMEN'S ATELIER</span>
+          <h3 class="bento-card-title">Women's Silhouette</h3>
+          <p class="bento-card-desc">Architectural stilettos, cloud-knit runners, and effortless everyday flats.</p>
+          <span class="text-pink fw-bold" style="font-size:0.9rem; color:var(--accent-pink);">Browse Collection <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Kids' Collection -->
+      <a href="product.html#kids" class="bento-card">
+        <img src="images/Category/Kids Category/Kid's Sports/Sports (3).jpg" alt="Kids Footwear" class="bento-card-bg">
+        <div class="bento-card-content">
+          <span class="badge-tag mb-2" style="width:fit-content; background:rgba(245,158,11,0.15); color:#f59e0b; border-color:#f59e0b;">JUNIOR FORWARD</span>
+          <h3 class="bento-card-title">Junior Explorers</h3>
+          <p class="bento-card-desc">Reinforced scuff-proof toe guards, high-bounce midsoles, and glitter party shoes.</p>
+          <span class="text-warning fw-bold" style="font-size:0.9rem;">Browse Collection <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FEATURED DROPS SHOWCASE (Dynamic Render from products.js) -->
+  <section class="catalog-section">
+    <div class="section-head">
+      <div class="section-subhead">Trending Now</div>
+      <h2 class="section-title">Iconic Drops of the Season</h2>
+    </div>
+
+    <div class="products-grid" id="featured-drops-container">
+      <!-- Injected dynamically via script -->
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="product.html" class="btn-neon">
+        <span>View Full 3D Catalog</span>
+        <i class="bi bi-grid-3x3-gap"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- LUXURY FOOTER -->
+  <footer class="haven-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <img src="images/Logo.webp" alt="Logo" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--accent-cyan);">
+          <span class="brand-title" style="font-size:1.2rem;">SHOE HAVEN</span>
+        </div>
+        <p>
+          Merging futuristic design sensibilities with biomechanical excellence. Designed for movers, creators, and boundary breakers.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="product.html">Full Catalog</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="wishlist.html">Saved Items</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="product.html#men">Men's Vanguard</a></li>
+          <li><a href="product.html#women">Women's Atelier</a></li>
+          <li><a href="product.html#kids">Junior Explorers</a></li>
+          <li><a href="product.html#sports">Performance Lab</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Atelier Care</h4>
+        <ul class="footer-links-list">
+          <li><a href="checkout.html">Express Checkout</a></li>
+          <li><a href="#">Size & Fit Guide</a></li>
+          <li><a href="#">3D Customizer</a></li>
+          <li><a href="#">Authenticity Guarantee</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 Shoe Haven. All Rights Reserved. Engineered for Spatial Web.</span>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-muted"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="text-muted"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="text-muted"><i class="bi bi-discord"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE FLOATING GLASS DOCK (< 768px) -->
+  <nav class="mobile-bottom-dock">
+    <a href="index.html" class="mobile-dock-btn active">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="product.html" class="mobile-dock-btn">
+      <i class="bi bi-grid"></i>
+      <span>Shop</span>
+    </a>
+    <a href="wishlist.html" class="mobile-dock-btn">
+      <i class="bi bi-heart"></i>
+      <span>Saved</span>
+      <span class="badge-pill wishlist-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </a>
+    <button class="mobile-dock-btn" onclick="HavenUI.openCartDrawer()">
+      <i class="bi bi-bag"></i>
+      <span>Bag</span>
+      <span class="badge-pill cart-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    </button>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/three-hero.js"></script>
+
+  <!-- Inject Featured Drops on Home Page -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('featured-drops-container');
+      if (!container || !window.SHOE_CATALOG) return;
+
+      // Pick 4 curated drops
+      const featured = window.SHOE_CATALOG.slice(0, 6);
+
+      container.innerHTML = featured.map(shoe => {
+        const isWish = HavenStore.isInWishlist(shoe.name);
+        return `
+          <div class="shoe-card">
+            <div class="card-top-badges">
+              <span class="badge-tag">${shoe.badge || 'HOT'}</span>
+              <button class="btn-wishlist-toggle ${isWish ? 'in-wishlist' : ''}" 
+                      onclick="HavenStore.toggleWishlist(${JSON.stringify(shoe).replace(/"/g, '&quot;')}); this.classList.toggle('in-wishlist');"
+                      title="Save to Wishlist">
+                <i class="bi ${isWish ? 'bi-heart-fill' : 'bi-heart'}"></i>
+              </button>
+            </div>
+
+            <div class="card-image-box">
+              <img src="${shoe.image}" alt="${shoe.name}" class="card-shoe-img">
+              <div class="card-quick-overlay">
+                <button class="btn-quick-view" onclick="HavenUI.openQuickView('${shoe.id}')">
+                  <i class="bi bi-eye"></i> Quick 3D View
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="card-meta-line">
+                <span class="shoe-category-tag">${shoe.gender}'s • ${shoe.category}</span>
+                <span class="shoe-rating"><i class="bi bi-star-fill"></i> ${shoe.rating}</span>
+              </div>
+              <h3 class="shoe-title" title="${shoe.name}">${shoe.name}</h3>
+              <div class="card-foot-pricing">
+                <span class="shoe-price">$${shoe.price.toFixed(2)}</span>
+                ${shoe.originalPrice ? `<span class="shoe-original-price">$${shoe.originalPrice.toFixed(2)}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="card-action-bar">
+              <button class="btn-add-cart" onclick="HavenStore.addToCart(${JSON.stringify(shoe).replace(/"/g, '&quot;')})">
+                <i class="bi bi-bag-plus"></i> Add to Bag
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    });
+  </script>
 </body>
 </html>
