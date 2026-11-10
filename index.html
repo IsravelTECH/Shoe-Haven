@@ -130,7 +130,7 @@
     }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen relative selection:bg-cyan-400 selection:text-black pb-28 md:pb-12">
+<body class="text-slate-100 min-h-screen relative selection:bg-cyan-400 selection:text-black flex flex-col">
 
   <!-- =========================================================================
        1. FLOATING GLASS PILL NAVBAR
@@ -449,9 +449,9 @@
   </section>
 
   <!-- =========================================================================
-       6. LUXURY FOOTER
+       6. LUXURY FOOTER (Sticky & Extends to Edge)
        ========================================================================= -->
-  <footer class="bg-black/80 border-t border-white/10 pt-12 sm:pt-16 pb-12 mt-12 sm:mt-20">
+  <footer class="haven-footer bg-[#050811] border-t border-white/10 pt-12 sm:pt-16 pb-24 sm:pb-14 mt-auto w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
         <div>
@@ -505,28 +505,28 @@
   </footer>
 
   <!-- =========================================================================
-       7. MOBILE BOTTOM GLASS DOCK (< 768px)
+       7. MOBILE BOTTOM GLASS DOCK (Fixed to Bottom Edge)
        ========================================================================= -->
-  <nav class="md:hidden fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-1.75rem)] max-w-sm glass-pill rounded-full px-5 py-2 flex items-center justify-between z-40 shadow-2xl">
-    <a href="index.html" class="flex flex-col items-center gap-0.5 text-cyan-300">
-      <i class="bi bi-house-door text-base"></i>
-      <span class="text-[9px] font-semibold">Home</span>
+  <nav class="mobile-bottom-dock md:hidden fixed bottom-0 left-0 right-0 w-full z-50 bg-[#070b14]/95 backdrop-blur-2xl border-t border-white/10 px-6 py-2.5 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+    <a href="index.html" class="mobile-dock-btn active">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
     </a>
-    <a href="product.html" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white">
-      <i class="bi bi-grid text-base"></i>
-      <span class="text-[9px] font-medium">Shop</span>
+    <a href="product.html" class="mobile-dock-btn">
+      <i class="bi bi-grid"></i>
+      <span>Shop</span>
     </a>
-    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white relative">
-      <i class="bi bi-heart text-base"></i>
-      <span class="text-[9px] font-medium">Saved</span>
-      <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-pink-500 text-[8px] font-bold text-white rounded-full flex items-center justify-center hidden">
+    <a href="wishlist.html" class="mobile-dock-btn relative">
+      <i class="bi bi-heart"></i>
+      <span>Saved</span>
+      <span class="wishlist-badge-count absolute -top-1 right-2 min-w-[14px] h-[14px] bg-pink-500 text-[8px] font-bold text-white rounded-full flex items-center justify-center hidden">
         0
       </span>
     </a>
-    <button onclick="HavenUI.openCartDrawer()" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white relative">
-      <i class="bi bi-bag text-base"></i>
-      <span class="text-[9px] font-medium">Bag</span>
-      <span class="cart-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-cyan-400 text-[8px] font-bold text-black rounded-full flex items-center justify-center hidden">
+    <button onclick="HavenUI.openCartDrawer()" class="mobile-dock-btn relative">
+      <i class="bi bi-bag"></i>
+      <span>Bag</span>
+      <span class="cart-badge-count absolute -top-1 right-2 min-w-[14px] h-[14px] bg-cyan-400 text-[8px] font-bold text-black rounded-full flex items-center justify-center hidden">
         0
       </span>
     </button>
