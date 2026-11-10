@@ -19,11 +19,22 @@
 
   // 1. Scene, Camera, Renderer
   const scene = new THREE.Scene();
-  const width = container.clientWidth || 600;
-  const height = container.clientHeight || 550;
+  const width = container.clientWidth || 360;
+  const height = container.clientHeight || 320;
 
-  const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-  camera.position.set(0, 0.8, 5.5);
+  const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100);
+  
+  // Responsive camera distance
+  function updateCameraDistance() {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      camera.position.set(0, 0.45, 6.2);
+    } else {
+      camera.position.set(0, 0.7, 5.4);
+    }
+    camera.lookAt(0, -0.2, 0);
+  }
+  updateCameraDistance();
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setSize(width, height);
@@ -129,7 +140,7 @@
     metalness: 0.2
   });
 
-  // 4. Build Pedestal (matching the reference image)
+  // 4. Build Pedestal (matching reference mockup)
   function buildPedestal() {
     // Pedestal Base Cylinder
     const baseGeo = new THREE.CylinderGeometry(1.65, 1.75, 0.28, 64);
@@ -169,7 +180,7 @@
     pedestalGroup.add(shadowMesh);
   }
 
-  // 5. Build Sneaker Model (Futuristic silhouette with glowing neon piping)
+  // 5. Build Sneaker Model
   function buildSneaker() {
     // 5.1 Outsole
     const soleGeo = new THREE.CylinderGeometry(0.75, 1.05, 0.38, 36);
@@ -225,14 +236,14 @@
     heelMesh.castShadow = true;
     sneakerGroup.add(heelMesh);
 
-    // Heel Pull Tab with glowing edge
+    // Heel Pull Tab
     const tabGeo = new THREE.BoxGeometry(0.12, 0.35, 0.08);
     const tabMesh = new THREE.Mesh(tabGeo, shoeAccentTrimMaterial);
     tabMesh.position.set(-1.25, 1.1, 0);
     tabMesh.rotation.z = -0.3;
     sneakerGroup.add(tabMesh);
 
-    // 5.5 Signature Glowing Neon Wave (Lateral & Medial sides matching mockup)
+    // 5.5 Signature Glowing Neon Waves
     const waveCurveLateral = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-0.9, 0.55, 0.65),
       new THREE.Vector3(-0.4, 0.35, 0.78),
@@ -243,7 +254,6 @@
     const waveMeshLateral = new THREE.Mesh(waveGeoLateral, shoeNeonTrimMaterial);
     sneakerGroup.add(waveMeshLateral);
 
-    // Medial side wave
     const waveCurveMedial = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-0.9, 0.55, -0.65),
       new THREE.Vector3(-0.4, 0.35, -0.78),
@@ -254,17 +264,7 @@
     const waveMeshMedial = new THREE.Mesh(waveGeoMedial, shoeNeonTrimMaterial);
     sneakerGroup.add(waveMeshMedial);
 
-    // Additional contour glow lines
-    const contourCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.2, 0.85, 0.5),
-      new THREE.Vector3(0.3, 0.8, 0.4),
-      new THREE.Vector3(0.6, 0.5, 0.5)
-    ]);
-    const contourGeo = new THREE.TubeGeometry(contourCurve, 20, 0.03, 8, false);
-    const contourMesh = new THREE.Mesh(contourGeo, shoeNeonTrimMaterial);
-    sneakerGroup.add(contourMesh);
-
-    // 5.6 Futuristic Cross Laces
+    // 5.6 Laces
     for (let k = -0.2; k <= 0.6; k += 0.2) {
       const laceCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(k - 0.05, 0.8 - (k * 0.2), 0.35),
@@ -276,7 +276,7 @@
       sneakerGroup.add(laceMesh);
     }
 
-    // Set initial dynamic floating sneaker pose
+    // Dynamic initial pose
     sneakerGroup.position.set(0, 0.15, 0);
     sneakerGroup.rotation.y = -0.65;
     sneakerGroup.rotation.x = 0.22;
@@ -287,7 +287,7 @@
   buildSneaker();
 
   // 6. Ambient Particle Dust
-  const particleCount = 65;
+  const particleCount = 50;
   const particleGeo = new THREE.BufferGeometry();
   const particlePositions = new Float32Array(particleCount * 3);
 
@@ -336,7 +336,6 @@
 
     targetRotation.y += deltaX * 0.009;
     targetRotation.x += deltaY * 0.006;
-    // Constrain pitch so shoe stays upright
     targetRotation.x = Math.max(-0.4, Math.min(0.65, targetRotation.x));
 
     prevPointer.x = clientX;
@@ -361,7 +360,7 @@
     targetRotation.y += step;
   };
 
-  // 8. Dynamic Color Swatch Switcher (Cyan, Orange, Purple, Green)
+  // 8. Dynamic Color Swatch Switcher
   window.setShoeThemeColor = function (hexColor) {
     currentHex = hexColor;
     currentThemeColor.set(hexColor);
@@ -375,26 +374,25 @@
     cursorLight.color.set(currentThemeColor);
     particleMat.color.set(currentThemeColor);
 
-    // Sync all swatch buttons (both desktop and mobile)
+    // Sync all swatch buttons
     document.querySelectorAll('[data-swatch-color]').forEach(dot => {
       const dotColor = dot.getAttribute('data-swatch-color');
       if (dotColor.toLowerCase() === hexColor.toLowerCase()) {
         dot.classList.add('ring-2', 'ring-white', 'scale-125');
-        dot.classList.remove('opacity-60');
+        dot.classList.remove('opacity-50');
       } else {
         dot.classList.remove('ring-2', 'ring-white', 'scale-125');
-        dot.classList.add('opacity-60');
+        dot.classList.add('opacity-50');
       }
     });
 
-    // Update global CSS variable for neon glow
     document.documentElement.style.setProperty('--current-neon', hexColor);
   };
 
   // Set default active swatch
   window.setShoeThemeColor('#00E5FF');
 
-  // 9. Animation Render Loop (Anti-Gravity Levitation & Damping)
+  // 9. Animation Render Loop
   const clock = new THREE.Clock();
 
   function animate() {
@@ -410,7 +408,7 @@
       targetRotation.y += 0.0025;
     }
 
-    // Smooth rotational interpolation (inertial damping)
+    // Smooth rotational interpolation
     currentRotation.x += (targetRotation.x - currentRotation.x) * 0.08;
     currentRotation.y += (targetRotation.y - currentRotation.y) * 0.08;
 
@@ -431,6 +429,7 @@
   // 10. Responsive Canvas Resize
   function handleResize() {
     if (!container) return;
+    updateCameraDistance();
     const w = container.clientWidth;
     const h = container.clientHeight;
     camera.aspect = w / h;
@@ -439,5 +438,5 @@
   }
 
   window.addEventListener('resize', handleResize);
-  setTimeout(handleResize, 150);
+  setTimeout(handleResize, 200);
 })();

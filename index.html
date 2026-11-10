@@ -28,12 +28,6 @@
             cyan: {
               neon: '#00E5FF',
               glow: '#00F2FE',
-            },
-            swatch: {
-              cyan: '#00E5FF',
-              orange: '#FF6B00',
-              purple: '#A855F7',
-              green: '#10B981',
             }
           },
           fontFamily: {
@@ -42,12 +36,8 @@
           },
           boxShadow: {
             'neon-cyan': '0 0 25px rgba(0, 229, 255, 0.45)',
-            'neon-cyan-lg': '0 0 45px rgba(0, 229, 255, 0.65)',
             'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
             'card-3d': '0 20px 40px -15px rgba(0, 0, 0, 0.7)',
-          },
-          backdropBlur: {
-            'xs': '2px',
           }
         }
       }
@@ -64,17 +54,18 @@
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    /* Custom Neon & Glassmorphism Utilities */
     :root {
       --current-neon: #00E5FF;
     }
 
     body {
-      background: radial-gradient(circle at 50% 10%, rgba(0, 229, 255, 0.08) 0%, transparent 45%),
+      background: radial-gradient(circle at 50% 12%, rgba(0, 229, 255, 0.08) 0%, transparent 45%),
                   radial-gradient(circle at 85% 65%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
                   linear-gradient(180deg, #0B0F19 0%, #070B16 50%, #030712 100%);
       background-attachment: fixed;
       font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .font-space {
@@ -82,14 +73,14 @@
     }
 
     .glass-pill {
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .glass-card {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -115,35 +106,57 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(1.3); }
     }
+
+    /* Force responsive container widths */
+    @media (max-width: 1023px) {
+      .hero-grid-responsive {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .hero-content-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: center !important;
+        align-items: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .hero-showcase-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 1.5rem !important;
+      }
+    }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-400 selection:text-black">
+<body class="text-slate-100 min-h-screen relative selection:bg-cyan-400 selection:text-black pb-28 md:pb-12">
 
   <!-- =========================================================================
-       1. FLOATING GLASS PILL NAVBAR (Desktop & Mobile)
+       1. FLOATING GLASS PILL NAVBAR
        ========================================================================= -->
-  <header class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 max-w-7xl mx-auto transition-all duration-300">
-    <nav class="glass-pill rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-2xl">
+  <header class="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-6 max-w-7xl mx-auto">
+    <nav class="glass-pill rounded-full px-3.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between shadow-2xl">
       
-      <!-- Brand Logo & Badge -->
-      <a href="index.html" class="flex items-center gap-3 group">
-        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-cyan-400/60 shadow-[0_0_15px_rgba(0,229,255,0.4)] group-hover:scale-105 transition-transform">
+      <!-- Brand Logo & Title -->
+      <a href="index.html" class="flex items-center gap-2 sm:gap-3 group">
+        <div class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-cyan-400/60 shadow-[0_0_15px_rgba(0,229,255,0.4)] group-hover:scale-105 transition-transform">
           <img src="images/Logo.webp" alt="Shoe Haven Logo" class="w-full h-full object-cover">
         </div>
-        <div class="flex items-center gap-2">
-          <span class="font-space font-bold text-lg sm:text-xl tracking-wider text-white bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text text-transparent">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span class="font-space font-bold text-base sm:text-xl tracking-wider text-white">
             SHOE HAVEN
           </span>
-          <span class="text-[10px] font-space font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 shadow-[0_0_10px_rgba(0,229,255,0.3)]">
+          <span class="hidden sm:inline-block text-[10px] font-space font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40">
             3D EDITION
           </span>
         </div>
       </a>
 
-      <!-- Center Navigation Links (Desktop) -->
+      <!-- Center Nav Links (Desktop Only) -->
       <ul class="hidden md:flex items-center gap-1.5 lg:gap-2">
         <li>
-          <a href="index.html" class="px-4 py-1.5 rounded-full text-xs lg:text-sm font-medium tracking-wide bg-cyan-400/15 text-cyan-300 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,229,255,0.25)] transition-all">
+          <a href="index.html" class="px-4 py-1.5 rounded-full text-xs lg:text-sm font-medium tracking-wide bg-cyan-400/15 text-cyan-300 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,229,255,0.25)]">
             Home
           </a>
         </li>
@@ -170,61 +183,65 @@
       </ul>
 
       <!-- Right Action Pill Buttons -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Search Trigger Button -->
-        <a href="product.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" title="Search Catalog">
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <!-- Search Trigger (Hidden on narrow mobile, in drawer) -->
+        <a href="product.html" class="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card items-center justify-center text-slate-300 hover:text-cyan-300 transition-all" title="Search Catalog">
           <i class="bi bi-search text-sm"></i>
         </a>
 
-        <!-- Wishlist Button -->
-        <a href="wishlist.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-pink-400 hover:border-pink-400/50 hover:shadow-[0_0_15px_rgba(244,114,182,0.3)] transition-all relative" title="Saved Wishlist">
+        <!-- Wishlist Button (Hidden on narrow mobile, in drawer & bottom dock) -->
+        <a href="wishlist.html" class="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card items-center justify-center text-slate-300 hover:text-pink-400 transition-all relative" title="Saved Wishlist">
           <i class="bi bi-heart text-sm"></i>
-          <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-pink-500 to-purple-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center hidden">
+          <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-pink-500 text-[9px] font-bold text-white rounded-full flex items-center justify-center hidden">
             0
           </span>
         </a>
 
-        <!-- Shopping Bag Trigger -->
-        <button onclick="HavenUI.openCartDrawer()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all relative" title="View Cart">
+        <!-- Shopping Bag Trigger (Always Visible) -->
+        <button onclick="HavenUI.openCartDrawer()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 transition-all relative" title="View Cart">
           <i class="bi bi-bag text-sm"></i>
-          <span class="cart-badge-count absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-cyan-400 text-[10px] font-bold text-black rounded-full flex items-center justify-center shadow-[0_0_8px_#00E5FF] hidden">
+          <span class="cart-badge-count absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-cyan-400 text-[9px] font-bold text-black rounded-full flex items-center justify-center shadow-[0_0_8px_#00E5FF] hidden">
             0
           </span>
         </button>
 
         <!-- Mobile Hamburger Toggle -->
-        <button id="mobile-menu-btn" class="md:hidden w-9 h-9 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-white" aria-label="Toggle Menu">
-          <i class="bi bi-list text-xl"></i>
+        <button id="mobile-menu-btn" class="md:hidden w-8 h-8 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-white" aria-label="Toggle Menu">
+          <i class="bi bi-list text-lg"></i>
         </button>
       </div>
 
     </nav>
 
     <!-- Mobile Slide-Down Navigation Sheet -->
-    <div id="mobile-menu-drawer" class="md:hidden mt-2 glass-pill rounded-3xl p-5 shadow-2xl transition-all duration-300 hidden">
-      <div class="flex flex-col gap-2">
-        <a href="index.html" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-cyan-300 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-between">
+    <div id="mobile-menu-drawer" class="md:hidden mt-2 glass-pill rounded-2xl p-4 shadow-2xl transition-all duration-300 hidden">
+      <div class="flex flex-col gap-1.5">
+        <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-cyan-300 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-between">
           <span>Home</span>
-          <i class="bi bi-chevron-right text-xs"></i>
+          <i class="bi bi-chevron-right text-[10px]"></i>
         </a>
-        <a href="product.html" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+        <a href="product.html" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between">
           <span>Collection</span>
-          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+          <i class="bi bi-chevron-right text-[10px] text-slate-500"></i>
         </a>
-        <a href="product.html#men" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+        <a href="product.html#men" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between">
           <span>Men's Series</span>
-          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+          <i class="bi bi-chevron-right text-[10px] text-slate-500"></i>
         </a>
-        <a href="product.html#women" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+        <a href="product.html#women" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between">
           <span>Women's Series</span>
-          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+          <i class="bi bi-chevron-right text-[10px] text-slate-500"></i>
         </a>
-        <a href="product.html#kids" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+        <a href="product.html#kids" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between">
           <span>Kids' Series</span>
-          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+          <i class="bi bi-chevron-right text-[10px] text-slate-500"></i>
+        </a>
+        <a href="wishlist.html" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between">
+          <span>Saved Wishlist</span>
+          <i class="bi bi-heart text-[10px] text-pink-400"></i>
         </a>
       </div>
-      <div class="mt-4 pt-4 border-t border-white/10 flex gap-2">
+      <div class="mt-3 pt-3 border-t border-white/10 flex gap-2">
         <a href="product.html" class="flex-1 py-2 rounded-xl text-center text-xs font-bold bg-cyan-400 text-black">Explore Drops</a>
         <button onclick="HavenUI.openCartDrawer()" class="flex-1 py-2 rounded-xl text-center text-xs font-semibold glass-card text-white">View Bag</button>
       </div>
@@ -232,106 +249,102 @@
   </header>
 
   <!-- =========================================================================
-       2. HERO SECTION (Desktop 2-Column & Responsive Mobile Stack)
+       2. HERO SECTION (100% Responsive Grid: Stacked Mobile, 2-Col Desktop)
        ========================================================================= -->
-  <section class="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+  <section class="relative min-h-[90vh] flex items-center justify-center pt-24 sm:pt-28 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
     
     <!-- Ambient Radial Glows -->
-    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[110px] pointer-events-none"></div>
-    <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 left-1/4 w-60 sm:w-80 h-60 sm:h-80 bg-purple-600/10 rounded-full blur-[90px] pointer-events-none"></div>
 
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+    <div class="hero-grid-responsive w-full lg:grid lg:grid-cols-12 gap-6 lg:gap-12 items-center relative z-10">
       
-      <!-- LEFT COLUMN: Content & Value Proposition (5 Cols) -->
-      <div class="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
+      <!-- CONTENT COLUMN: Badge, Heading, Subtitle, CTAs -->
+      <div class="hero-content-col lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left w-full">
         
         <!-- Category Tag Pill -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-xs font-semibold tracking-wider uppercase mb-6 shadow-[0_0_15px_rgba(0,229,255,0.15)]">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 pulse-dot-cyan"></span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-[11px] sm:text-xs font-semibold tracking-wider uppercase mb-4 sm:mb-6 shadow-[0_0_15px_rgba(0,229,255,0.15)]">
+          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 pulse-dot-cyan"></span>
           <span>NEXT-GEN ERGONOMICS & DESIGN</span>
         </div>
 
-        <!-- Main Headline -->
-        <h1 class="font-space font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.08] mb-6">
-          Step into the<br>
-          <span class="bg-gradient-to-r from-cyan-300 via-cyan-glow to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,229,255,0.4)]">
+        <!-- Main Headline (Balanced Wrapping & Responsive Sizing) -->
+        <h1 class="font-space font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.12] mb-3 sm:mb-5 w-full">
+          Step into the<br class="hidden sm:inline">
+          <span class="bg-gradient-to-r from-cyan-300 via-cyan-glow to-white bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(0,229,255,0.45)] whitespace-nowrap">
             Future of Motion
           </span>
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-slate-400 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg mb-8">
+        <p class="text-slate-300 text-xs sm:text-base leading-relaxed max-w-md lg:max-w-lg mb-6 sm:mb-8 px-2 sm:px-0">
           Experience spatial 3D footwear architecture engineered with nitrogen-infused kinetic foam and aerospace-grade lightweight mesh.
         </p>
 
         <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+        <div class="flex flex-row items-center justify-center lg:justify-start gap-3 w-full max-w-sm sm:max-w-none">
           <!-- Primary CTA Button -->
-          <a href="product.html" class="neon-glow-btn text-black font-space font-bold px-8 py-3.5 rounded-full text-base flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] tracking-wide">
+          <a href="product.html" class="neon-glow-btn text-black font-space font-bold px-5 sm:px-8 py-3 sm:py-3.5 rounded-full text-xs sm:text-base flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2 min-h-[44px] tracking-wide">
             <span>Explore Drops</span>
-            <i class="bi bi-arrow-right text-lg"></i>
+            <i class="bi bi-arrow-right text-sm sm:text-base"></i>
           </a>
 
           <!-- Secondary CTA Button -->
-          <button onclick="HavenUI.openCartDrawer()" class="glass-card hover:bg-white/10 text-white font-medium px-7 py-3.5 rounded-full text-base flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] transition-all">
+          <button onclick="HavenUI.openCartDrawer()" class="glass-card hover:bg-white/10 text-white font-medium px-4 sm:px-7 py-3 sm:py-3.5 rounded-full text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 min-h-[44px] transition-all">
             <i class="bi bi-bag"></i>
             <span>Quick Bag</span>
           </button>
         </div>
 
-        <!-- Carousel Orbit Nav Controls (< and >) -->
-        <div class="mt-8 flex items-center gap-3">
-          <button onclick="window.rotateSneaker('left')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" aria-label="Rotate Left">
-            <i class="bi bi-chevron-left text-sm"></i>
+        <!-- 360° Orbit Navigation Controls -->
+        <div class="mt-5 sm:mt-8 flex items-center justify-center lg:justify-start gap-2.5">
+          <button onclick="window.rotateSneaker('left')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 transition-all" aria-label="Rotate Left">
+            <i class="bi bi-chevron-left text-xs sm:text-sm"></i>
           </button>
-          <button onclick="window.rotateSneaker('right')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" aria-label="Rotate Right">
-            <i class="bi bi-chevron-right text-sm"></i>
+          <button onclick="window.rotateSneaker('right')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 transition-all" aria-label="Rotate Right">
+            <i class="bi bi-chevron-right text-xs sm:text-sm"></i>
           </button>
-          <span class="text-xs text-slate-500 font-mono tracking-wider ml-2">360° SPATIAL VIEWER</span>
+          <span class="text-[11px] sm:text-xs text-slate-400 font-mono tracking-wider ml-1">360° SPATIAL VIEWER</span>
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: 3D Interactive Sneaker Showcase (7 Cols) -->
-      <div class="lg:col-span-7 relative flex items-center justify-center w-full">
+      <!-- 3D SHOWCASE COLUMN: Floating Sneaker + Glowing Dual-Ring Pedestal -->
+      <div class="hero-showcase-col lg:col-span-7 relative flex flex-col items-center justify-center w-full mt-6 lg:mt-0">
         
-        <!-- 3D Canvas Box -->
-        <div class="relative w-full h-[380px] sm:h-[460px] lg:h-[540px] flex items-center justify-center">
+        <!-- Canvas Stage -->
+        <div class="relative w-full max-w-lg lg:max-w-none h-[300px] sm:h-[420px] lg:h-[520px] flex items-center justify-center">
           
           <!-- WebGL Three.js Container -->
           <div id="three-canvas-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
-          <!-- Vertical Color Swatch Pill (Desktop: Far Right) -->
+          <!-- Vertical Color Swatch Pill (Desktop Only: Far Right) -->
           <div class="hidden md:flex absolute right-2 lg:right-4 top-1/2 -translate-y-1/2 flex-col gap-3 p-2.5 rounded-full glass-pill z-20 shadow-2xl">
-            <!-- Cyan (Active) -->
             <button onclick="setShoeThemeColor('#00E5FF')" data-swatch-color="#00E5FF" class="w-6 h-6 rounded-full bg-[#00E5FF] shadow-[0_0_12px_#00E5FF] transition-all ring-2 ring-white scale-125" title="Cyber Cyan"></button>
-            <!-- Orange -->
-            <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-6 h-6 rounded-full bg-[#FF6B00] hover:shadow-[0_0_12px_#FF6B00] transition-all opacity-60 hover:opacity-100" title="Solar Orange"></button>
-            <!-- Purple -->
-            <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-6 h-6 rounded-full bg-[#A855F7] hover:shadow-[0_0_12px_#A855F7] transition-all opacity-60 hover:opacity-100" title="Neon Purple"></button>
-            <!-- Green -->
-            <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-6 h-6 rounded-full bg-[#10B981] hover:shadow-[0_0_12px_#10B981] transition-all opacity-60 hover:opacity-100" title="Emerald Green"></button>
+            <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-6 h-6 rounded-full bg-[#FF6B00] transition-all opacity-50 hover:opacity-100" title="Solar Orange"></button>
+            <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-6 h-6 rounded-full bg-[#A855F7] transition-all opacity-50 hover:opacity-100" title="Neon Purple"></button>
+            <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-6 h-6 rounded-full bg-[#10B981] transition-all opacity-50 hover:opacity-100" title="Emerald Green"></button>
           </div>
 
           <!-- Bottom Interactive Hint Badge -->
-          <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full glass-pill text-[11px] sm:text-xs font-medium text-slate-300 flex items-center gap-2 pointer-events-none shadow-lg">
+          <div class="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full glass-pill text-[10px] sm:text-xs font-medium text-slate-300 flex items-center gap-1.5 pointer-events-none shadow-lg whitespace-nowrap">
             <i class="bi bi-arrows-move text-cyan-300"></i>
             <span>Drag to Rotate 360° • Interactive Lighting</span>
           </div>
 
         </div>
 
+        <!-- Mobile Horizontal Color Swatches Bar (under shoe preview on mobile) -->
+        <div class="md:hidden flex items-center justify-center gap-3 mt-3 glass-pill px-4 py-2 rounded-full mx-auto w-fit z-20">
+          <span class="text-[11px] text-slate-400 font-medium">Colorway:</span>
+          <button onclick="setShoeThemeColor('#00E5FF')" data-swatch-color="#00E5FF" class="w-5 h-5 rounded-full bg-[#00E5FF] shadow-[0_0_8px_#00E5FF] ring-2 ring-white scale-110" title="Cyan"></button>
+          <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-5 h-5 rounded-full bg-[#FF6B00] opacity-50" title="Orange"></button>
+          <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-5 h-5 rounded-full bg-[#A855F7] opacity-50" title="Purple"></button>
+          <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-5 h-5 rounded-full bg-[#10B981] opacity-50" title="Green"></button>
+        </div>
+
       </div>
 
-    </div>
-
-    <!-- Mobile Horizontal Color Swatches Bar (under the shoe preview on mobile) -->
-    <div class="md:hidden flex items-center justify-center gap-4 mt-6 glass-pill px-5 py-2.5 rounded-full mx-auto w-fit z-20">
-      <span class="text-xs text-slate-400 font-medium">Colorway:</span>
-      <button onclick="setShoeThemeColor('#00E5FF')" data-swatch-color="#00E5FF" class="w-6 h-6 rounded-full bg-[#00E5FF] shadow-[0_0_10px_#00E5FF] ring-2 ring-white scale-110" title="Cyan"></button>
-      <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-6 h-6 rounded-full bg-[#FF6B00] opacity-60" title="Orange"></button>
-      <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-6 h-6 rounded-full bg-[#A855F7] opacity-60" title="Purple"></button>
-      <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-6 h-6 rounded-full bg-[#10B981] opacity-60" title="Green"></button>
     </div>
 
   </section>
@@ -339,8 +352,8 @@
   <!-- =========================================================================
        3. LIVE MARQUEE TICKER BAR
        ========================================================================= -->
-  <section class="haven-ticker-bar bg-white/[0.02] border-y border-white/[0.06] py-3.5 overflow-hidden">
-    <div class="ticker-track flex items-center gap-12 font-space text-xs sm:text-sm tracking-widest uppercase text-slate-400 font-semibold">
+  <section class="haven-ticker-bar bg-white/[0.02] border-y border-white/[0.06] py-3 sm:py-3.5 overflow-hidden">
+    <div class="ticker-track flex items-center gap-8 sm:gap-12 font-space text-[11px] sm:text-sm tracking-widest uppercase text-slate-400 font-semibold">
       <span class="flex items-center gap-2"><i class="bi bi-lightning-charge-fill text-cyan-400"></i> NITROGEN-INFUSED KINETIC FOAM</span>
       <span class="flex items-center gap-2"><i class="bi bi-box text-cyan-400"></i> 360° SPATIAL ORBIT VIEWER</span>
       <span class="flex items-center gap-2"><i class="bi bi-globe2 text-cyan-400"></i> WORLDWIDE EXPRESS DISPATCH</span>
@@ -356,24 +369,24 @@
   <!-- =========================================================================
        4. CATEGORY BENTO DISCOVERY GRID
        ========================================================================= -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="text-center mb-12">
-      <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-space">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+    <div class="text-center mb-8 sm:mb-12">
+      <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-1.5 font-space">
         Architected For Every Stride
       </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-space">
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-space">
         Engineered Categories
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
       
       <!-- Men's Card -->
-      <a href="product.html#men" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-cyan-400/50 transition-all duration-500 shadow-card-3d">
+      <a href="product.html#men" class="group relative h-[320px] sm:h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-cyan-400/50 transition-all duration-500 shadow-card-3d">
         <img src="images/Category/Men's Category/Men's Sports/Sports Mens.jpg" alt="Men's Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
-        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-5 sm:p-6 flex flex-col justify-end">
           <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 w-fit mb-2">MEN'S VANGUARD</span>
-          <h3 class="text-2xl font-bold text-white font-space mb-1">Performance & Speed</h3>
+          <h3 class="text-xl sm:text-2xl font-bold text-white font-space mb-1">Performance & Speed</h3>
           <p class="text-slate-300 text-xs mb-3">Adaptive propulsion shanks and nitrogen pods.</p>
           <span class="text-cyan-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             Explore Series <i class="bi bi-arrow-right"></i>
@@ -382,11 +395,11 @@
       </a>
 
       <!-- Women's Card -->
-      <a href="product.html#women" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-pink-400/50 transition-all duration-500 shadow-card-3d">
+      <a href="product.html#women" class="group relative h-[320px] sm:h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-pink-400/50 transition-all duration-500 shadow-card-3d">
         <img src="images/Category/Womens Category/Women Sports/Sports Women.jpg" alt="Women's Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
-        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-5 sm:p-6 flex flex-col justify-end">
           <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-pink-400/20 text-pink-300 border border-pink-400/40 w-fit mb-2">WOMEN'S ATELIER</span>
-          <h3 class="text-2xl font-bold text-white font-space mb-1">Elegance & Cushion</h3>
+          <h3 class="text-xl sm:text-2xl font-bold text-white font-space mb-1">Elegance & Cushion</h3>
           <p class="text-slate-300 text-xs mb-3">Engineered for female athletic gait biomechanics.</p>
           <span class="text-pink-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             Explore Series <i class="bi bi-arrow-right"></i>
@@ -395,11 +408,11 @@
       </a>
 
       <!-- Kids' Card -->
-      <a href="product.html#kids" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-amber-400/50 transition-all duration-500 shadow-card-3d">
+      <a href="product.html#kids" class="group relative h-[320px] sm:h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-amber-400/50 transition-all duration-500 shadow-card-3d">
         <img src="images/Category/Kids Category/Kid's Sports/Sports (3).jpg" alt="Kids Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
-        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-5 sm:p-6 flex flex-col justify-end">
           <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 w-fit mb-2">JUNIOR EXPLORER</span>
-          <h3 class="text-2xl font-bold text-white font-space mb-1">Playground Agility</h3>
+          <h3 class="text-xl sm:text-2xl font-bold text-white font-space mb-1">Playground Agility</h3>
           <p class="text-slate-300 text-xs mb-3">Reinforced scuff-proof toe guards and high-rebound soles.</p>
           <span class="text-amber-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             Explore Series <i class="bi bi-arrow-right"></i>
@@ -411,19 +424,19 @@
   </section>
 
   <!-- =========================================================================
-       5. FEATURED DROPS (Dynamic 3D Tilt Cards)
+       5. FEATURED DROPS
        ========================================================================= -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-3">
       <div>
-        <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-space">
+        <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-1.5 font-space">
           Curated Releases
         </div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-space">
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-space">
           Trending Kinetic Drops
         </h2>
       </div>
-      <a href="product.html" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 text-sm font-semibold">
+      <a href="product.html" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 text-xs sm:text-sm font-semibold">
         <span>View Full Catalog</span>
         <i class="bi bi-arrow-right"></i>
       </a>
@@ -438,22 +451,22 @@
   <!-- =========================================================================
        6. LUXURY FOOTER
        ========================================================================= -->
-  <footer class="bg-black/80 border-t border-white/10 pt-16 pb-12 mt-20">
+  <footer class="bg-black/80 border-t border-white/10 pt-12 sm:pt-16 pb-12 mt-12 sm:mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-        <div class="md:col-span-1">
-          <div class="flex items-center gap-2 mb-4">
-            <img src="images/Logo.webp" alt="Logo" class="w-8 h-8 rounded-full border border-cyan-400">
-            <span class="font-space font-bold text-xl text-white">SHOE HAVEN</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <img src="images/Logo.webp" alt="Logo" class="w-7 h-7 rounded-full border border-cyan-400">
+            <span class="font-space font-bold text-lg text-white">SHOE HAVEN</span>
           </div>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Merging futuristic design sensibilities with biomechanical excellence. Built for movers, athletes, and pioneers.
+          <p class="text-slate-400 text-xs leading-relaxed max-w-xs">
+            Merging futuristic design sensibilities with biomechanical excellence.
           </p>
         </div>
 
         <div>
-          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Navigation</h4>
-          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+          <h4 class="text-white font-space font-bold text-xs tracking-wider uppercase mb-3">Navigation</h4>
+          <ul class="flex flex-col gap-2 text-xs text-slate-400">
             <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
             <li><a href="product.html" class="hover:text-cyan-300 transition-colors">Collection</a></li>
             <li><a href="cart.html" class="hover:text-cyan-300 transition-colors">Shopping Bag</a></li>
@@ -462,32 +475,30 @@
         </div>
 
         <div>
-          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Categories</h4>
-          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+          <h4 class="text-white font-space font-bold text-xs tracking-wider uppercase mb-3">Categories</h4>
+          <ul class="flex flex-col gap-2 text-xs text-slate-400">
             <li><a href="product.html#men" class="hover:text-cyan-300 transition-colors">Men's Vanguard</a></li>
             <li><a href="product.html#women" class="hover:text-cyan-300 transition-colors">Women's Atelier</a></li>
             <li><a href="product.html#kids" class="hover:text-cyan-300 transition-colors">Junior Explorers</a></li>
-            <li><a href="product.html#sports" class="hover:text-cyan-300 transition-colors">Nitro Sports Series</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Spatial Care</h4>
-          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+          <h4 class="text-white font-space font-bold text-xs tracking-wider uppercase mb-3">Spatial Care</h4>
+          <ul class="flex flex-col gap-2 text-xs text-slate-400">
             <li><a href="checkout.html" class="hover:text-cyan-300 transition-colors">Express Checkout</a></li>
             <li><a href="#" class="hover:text-cyan-300 transition-colors">3D Customizer</a></li>
-            <li><a href="#" class="hover:text-cyan-300 transition-colors">Sizing & Fit Guide</a></li>
-            <li><a href="#" class="hover:text-cyan-300 transition-colors">Global Delivery</a></li>
+            <li><a href="#" class="hover:text-cyan-300 transition-colors">Sizing Guide</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+      <div class="border-t border-white/10 pt-5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
         <span>&copy; 2026 SHOE HAVEN (3D EDITION). All Rights Reserved.</span>
         <div class="flex items-center gap-4 text-slate-400">
-          <a href="#" class="hover:text-cyan-300"><i class="bi bi-instagram text-base"></i></a>
-          <a href="#" class="hover:text-cyan-300"><i class="bi bi-twitter-x text-base"></i></a>
-          <a href="#" class="hover:text-cyan-300"><i class="bi bi-discord text-base"></i></a>
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-discord"></i></a>
         </div>
       </div>
     </div>
@@ -496,25 +507,25 @@
   <!-- =========================================================================
        7. MOBILE BOTTOM GLASS DOCK (< 768px)
        ========================================================================= -->
-  <nav class="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm glass-pill rounded-full px-6 py-2.5 flex items-center justify-between z-40 shadow-2xl">
-    <a href="index.html" class="flex flex-col items-center gap-1 text-cyan-300">
-      <i class="bi bi-house-door text-lg"></i>
-      <span class="text-[10px] font-semibold">Home</span>
+  <nav class="md:hidden fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-1.75rem)] max-w-sm glass-pill rounded-full px-5 py-2 flex items-center justify-between z-40 shadow-2xl">
+    <a href="index.html" class="flex flex-col items-center gap-0.5 text-cyan-300">
+      <i class="bi bi-house-door text-base"></i>
+      <span class="text-[9px] font-semibold">Home</span>
     </a>
-    <a href="product.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i class="bi bi-grid text-lg"></i>
-      <span class="text-[10px] font-medium">Shop</span>
+    <a href="product.html" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white">
+      <i class="bi bi-grid text-base"></i>
+      <span class="text-[9px] font-medium">Shop</span>
     </a>
-    <a href="wishlist.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white relative">
-      <i class="bi bi-heart text-lg"></i>
-      <span class="text-[10px] font-medium">Saved</span>
+    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white relative">
+      <i class="bi bi-heart text-base"></i>
+      <span class="text-[9px] font-medium">Saved</span>
       <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-pink-500 text-[8px] font-bold text-white rounded-full flex items-center justify-center hidden">
         0
       </span>
     </a>
-    <button onclick="HavenUI.openCartDrawer()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white relative">
-      <i class="bi bi-bag text-lg"></i>
-      <span class="text-[10px] font-medium">Bag</span>
+    <button onclick="HavenUI.openCartDrawer()" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white relative">
+      <i class="bi bi-bag text-base"></i>
+      <span class="text-[9px] font-medium">Bag</span>
       <span class="cart-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-cyan-400 text-[8px] font-bold text-black rounded-full flex items-center justify-center hidden">
         0
       </span>
