@@ -1,321 +1,590 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHOE HAVEN | Kinetic 3D Atelier & Luxury Footwear</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SHOE HAVEN (3D EDITION) | Futuristic Footwear & Spatial Atelier</title>
   <link rel="icon" href="images/Logo.webp" type="image/x-icon">
 
-  <!-- Bootstrap 5.3 & Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Space Grotesk & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              900: '#030712',
+              800: '#070B16',
+              700: '#0B0F19',
+              600: '#111827',
+            },
+            cyan: {
+              neon: '#00E5FF',
+              glow: '#00F2FE',
+            },
+            swatch: {
+              cyan: '#00E5FF',
+              orange: '#FF6B00',
+              purple: '#A855F7',
+              green: '#10B981',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-cyan': '0 0 25px rgba(0, 229, 255, 0.45)',
+            'neon-cyan-lg': '0 0 45px rgba(0, 229, 255, 0.65)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            'card-3d': '0 20px 40px -15px rgba(0, 0, 0, 0.7)',
+          },
+          backdropBlur: {
+            'xs': '2px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- Three.js (3D WebGL Engine) -->
+  <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <!-- Custom Kinetic Design System -->
+  <!-- Custom Master Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
 
-  <!-- FLOATING GLASS HEADER DOCK -->
-  <header class="haven-header">
-    <div class="header-glass-dock">
-      <div class="brand-wrapper">
-        <a href="index.html" class="d-flex align-items-center gap-2">
-          <div class="brand-logo-glow">
-            <img src="images/Logo.webp" alt="Shoe Haven">
-          </div>
-          <span class="brand-title">SHOE HAVEN</span>
+  <style>
+    /* Custom Neon & Glassmorphism Utilities */
+    :root {
+      --current-neon: #00E5FF;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 10%, rgba(0, 229, 255, 0.08) 0%, transparent 45%),
+                  radial-gradient(circle at 85% 65%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
+                  linear-gradient(180deg, #0B0F19 0%, #070B16 50%, #030712 100%);
+      background-attachment: fixed;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-space {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .glass-pill {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .neon-glow-btn {
+      background: linear-gradient(135deg, #00F2FE 0%, #00E5FF 100%);
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .neon-glow-btn:hover {
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .pulse-dot-cyan {
+      box-shadow: 0 0 12px #00E5FF;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-400 selection:text-black">
+
+  <!-- =========================================================================
+       1. FLOATING GLASS PILL NAVBAR (Desktop & Mobile)
+       ========================================================================= -->
+  <header class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 max-w-7xl mx-auto transition-all duration-300">
+    <nav class="glass-pill rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-2xl">
+      
+      <!-- Brand Logo & Badge -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-cyan-400/60 shadow-[0_0_15px_rgba(0,229,255,0.4)] group-hover:scale-105 transition-transform">
+          <img src="images/Logo.webp" alt="Shoe Haven Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-space font-bold text-lg sm:text-xl tracking-wider text-white bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text text-transparent">
+            SHOE HAVEN
+          </span>
+          <span class="text-[10px] font-space font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 shadow-[0_0_10px_rgba(0,229,255,0.3)]">
+            3D EDITION
+          </span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links (Desktop) -->
+      <ul class="hidden md:flex items-center gap-1.5 lg:gap-2">
+        <li>
+          <a href="index.html" class="px-4 py-1.5 rounded-full text-xs lg:text-sm font-medium tracking-wide bg-cyan-400/15 text-cyan-300 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,229,255,0.25)] transition-all">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="product.html" class="px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+            Collection
+          </a>
+        </li>
+        <li>
+          <a href="product.html#men" class="px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+            Men
+          </a>
+        </li>
+        <li>
+          <a href="product.html#women" class="px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+            Women
+          </a>
+        </li>
+        <li>
+          <a href="product.html#kids" class="px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+            Kids
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right Action Pill Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Search Trigger Button -->
+        <a href="product.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" title="Search Catalog">
+          <i class="bi bi-search text-sm"></i>
         </a>
-        <span class="brand-tag">3D EDITION</span>
+
+        <!-- Wishlist Button -->
+        <a href="wishlist.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-pink-400 hover:border-pink-400/50 hover:shadow-[0_0_15px_rgba(244,114,182,0.3)] transition-all relative" title="Saved Wishlist">
+          <i class="bi bi-heart text-sm"></i>
+          <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-pink-500 to-purple-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center hidden">
+            0
+          </span>
+        </a>
+
+        <!-- Shopping Bag Trigger -->
+        <button onclick="HavenUI.openCartDrawer()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all relative" title="View Cart">
+          <i class="bi bi-bag text-sm"></i>
+          <span class="cart-badge-count absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-cyan-400 text-[10px] font-bold text-black rounded-full flex items-center justify-center shadow-[0_0_8px_#00E5FF] hidden">
+            0
+          </span>
+        </button>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button id="mobile-menu-btn" class="md:hidden w-9 h-9 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-white" aria-label="Toggle Menu">
+          <i class="bi bi-list text-xl"></i>
+        </button>
       </div>
 
-      <!-- Desktop Nav Links -->
-      <nav>
-        <ul class="nav-links">
-          <li><a href="index.html" class="nav-item-link active">Home</a></li>
-          <li><a href="product.html" class="nav-item-link">Collection</a></li>
-          <li><a href="product.html#men" class="nav-item-link">Men</a></li>
-          <li><a href="product.html#women" class="nav-item-link">Women</a></li>
-          <li><a href="product.html#kids" class="nav-item-link">Kids</a></li>
-        </ul>
-      </nav>
+    </nav>
 
-      <!-- Action Icons -->
-      <div class="nav-actions">
-        <a href="wishlist.html" class="icon-btn" title="View Wishlist">
-          <i class="bi bi-heart"></i>
-          <span class="badge-pill wishlist-badge-count" style="display:none;">0</span>
+    <!-- Mobile Slide-Down Navigation Sheet -->
+    <div id="mobile-menu-drawer" class="md:hidden mt-2 glass-pill rounded-3xl p-5 shadow-2xl transition-all duration-300 hidden">
+      <div class="flex flex-col gap-2">
+        <a href="index.html" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-cyan-300 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-between">
+          <span>Home</span>
+          <i class="bi bi-chevron-right text-xs"></i>
         </a>
-        <button class="icon-btn" onclick="HavenUI.openCartDrawer()" title="Open Bag">
-          <i class="bi bi-bag"></i>
-          <span class="badge-pill cart-badge-count" style="display:none;">0</span>
-        </button>
+        <a href="product.html" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+          <span>Collection</span>
+          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+        </a>
+        <a href="product.html#men" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+          <span>Men's Series</span>
+          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+        </a>
+        <a href="product.html#women" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+          <span>Women's Series</span>
+          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+        </a>
+        <a href="product.html#kids" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between">
+          <span>Kids' Series</span>
+          <i class="bi bi-chevron-right text-xs text-slate-500"></i>
+        </a>
+      </div>
+      <div class="mt-4 pt-4 border-t border-white/10 flex gap-2">
+        <a href="product.html" class="flex-1 py-2 rounded-xl text-center text-xs font-bold bg-cyan-400 text-black">Explore Drops</a>
+        <button onclick="HavenUI.openCartDrawer()" class="flex-1 py-2 rounded-xl text-center text-xs font-semibold glass-card text-white">View Bag</button>
       </div>
     </div>
   </header>
 
-  <!-- 3D KINETIC HERO SECTION -->
-  <section class="hero-stage">
-    <div class="hero-backdrop-glow"></div>
-    <div class="hero-grid">
+  <!-- =========================================================================
+       2. HERO SECTION (Desktop 2-Column & Responsive Mobile Stack)
+       ========================================================================= -->
+  <section class="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    
+    <!-- Ambient Radial Glows -->
+    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[110px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
       
-      <!-- Text & Value Prop -->
-      <div class="hero-text-content">
-        <div class="hero-chip">
-          <span class="pulse-dot"></span> Next-Gen Ergonomics & Design
+      <!-- LEFT COLUMN: Content & Value Proposition (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
+        
+        <!-- Category Tag Pill -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-xs font-semibold tracking-wider uppercase mb-6 shadow-[0_0_15px_rgba(0,229,255,0.15)]">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 pulse-dot-cyan"></span>
+          <span>NEXT-GEN ERGONOMICS & DESIGN</span>
         </div>
-        <h1 class="hero-title">
-          Step into the <br>
-          <span class="gradient-text">Future of Motion</span>
+
+        <!-- Main Headline -->
+        <h1 class="font-space font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.08] mb-6">
+          Step into the<br>
+          <span class="bg-gradient-to-r from-cyan-300 via-cyan-glow to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,229,255,0.4)]">
+            Future of Motion
+          </span>
         </h1>
-        <p class="hero-subtitle">
+
+        <!-- Subtitle -->
+        <p class="text-slate-400 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg mb-8">
           Experience spatial 3D footwear architecture engineered with nitrogen-infused kinetic foam and aerospace-grade lightweight mesh.
         </p>
 
-        <div class="hero-cta-group">
-          <a href="product.html" class="btn-neon">
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <!-- Primary CTA Button -->
+          <a href="product.html" class="neon-glow-btn text-black font-space font-bold px-8 py-3.5 rounded-full text-base flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] tracking-wide">
             <span>Explore Drops</span>
-            <i class="bi bi-arrow-right"></i>
+            <i class="bi bi-arrow-right text-lg"></i>
           </a>
-          <button class="btn-glass" onclick="HavenUI.openCartDrawer()">
-            <i class="bi bi-bag-plus"></i> Quick Bag
+
+          <!-- Secondary CTA Button -->
+          <button onclick="HavenUI.openCartDrawer()" class="glass-card hover:bg-white/10 text-white font-medium px-7 py-3.5 rounded-full text-base flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] transition-all">
+            <i class="bi bi-bag"></i>
+            <span>Quick Bag</span>
           </button>
         </div>
+
+        <!-- Carousel Orbit Nav Controls (< and >) -->
+        <div class="mt-8 flex items-center gap-3">
+          <button onclick="window.rotateSneaker('left')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" aria-label="Rotate Left">
+            <i class="bi bi-chevron-left text-sm"></i>
+          </button>
+          <button onclick="window.rotateSneaker('right')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all" aria-label="Rotate Right">
+            <i class="bi bi-chevron-right text-sm"></i>
+          </button>
+          <span class="text-xs text-slate-500 font-mono tracking-wider ml-2">360° SPATIAL VIEWER</span>
+        </div>
+
       </div>
 
-      <!-- 3D Interactive WebGL Sneaker Canvas -->
-      <div class="hero-3d-wrapper">
-        <div id="three-canvas-container"></div>
+      <!-- RIGHT COLUMN: 3D Interactive Sneaker Showcase (7 Cols) -->
+      <div class="lg:col-span-7 relative flex items-center justify-center w-full">
+        
+        <!-- 3D Canvas Box -->
+        <div class="relative w-full h-[380px] sm:h-[460px] lg:h-[540px] flex items-center justify-center">
+          
+          <!-- WebGL Three.js Container -->
+          <div id="three-canvas-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
-        <!-- Colorway Selector Swatches -->
-        <div class="model-color-swatches" title="Select Colorway">
-          <div class="color-swatch-dot active" data-color="#00F0FF" style="background:#00F0FF;" title="Cyber Cyan"></div>
-          <div class="color-swatch-dot" data-color="#FF6B00" style="background:#FF6B00;" title="Solar Amber"></div>
-          <div class="color-swatch-dot" data-color="#8B5CF6" style="background:#8B5CF6;" title="Neon Violet"></div>
-          <div class="color-swatch-dot" data-color="#10B981" style="background:#10B981;" title="Emerald Pulse"></div>
+          <!-- Vertical Color Swatch Pill (Desktop: Far Right) -->
+          <div class="hidden md:flex absolute right-2 lg:right-4 top-1/2 -translate-y-1/2 flex-col gap-3 p-2.5 rounded-full glass-pill z-20 shadow-2xl">
+            <!-- Cyan (Active) -->
+            <button onclick="setShoeThemeColor('#00E5FF')" data-swatch-color="#00E5FF" class="w-6 h-6 rounded-full bg-[#00E5FF] shadow-[0_0_12px_#00E5FF] transition-all ring-2 ring-white scale-125" title="Cyber Cyan"></button>
+            <!-- Orange -->
+            <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-6 h-6 rounded-full bg-[#FF6B00] hover:shadow-[0_0_12px_#FF6B00] transition-all opacity-60 hover:opacity-100" title="Solar Orange"></button>
+            <!-- Purple -->
+            <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-6 h-6 rounded-full bg-[#A855F7] hover:shadow-[0_0_12px_#A855F7] transition-all opacity-60 hover:opacity-100" title="Neon Purple"></button>
+            <!-- Green -->
+            <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-6 h-6 rounded-full bg-[#10B981] hover:shadow-[0_0_12px_#10B981] transition-all opacity-60 hover:opacity-100" title="Emerald Green"></button>
+          </div>
+
+          <!-- Bottom Interactive Hint Badge -->
+          <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full glass-pill text-[11px] sm:text-xs font-medium text-slate-300 flex items-center gap-2 pointer-events-none shadow-lg">
+            <i class="bi bi-arrows-move text-cyan-300"></i>
+            <span>Drag to Rotate 360° • Interactive Lighting</span>
+          </div>
+
         </div>
 
-        <div class="model-controls-badge">
-          <i class="bi bi-arrows-move"></i> Drag to Rotate 360° • Interactive Lighting
-        </div>
       </div>
 
     </div>
-  </section>
 
-  <!-- LIVE MARQUEE TICKER -->
-  <section class="haven-ticker-bar">
-    <div class="ticker-track">
-      <span class="ticker-item"><i class="bi bi-lightning-charge-fill"></i> NITROGEN KINETIC CORE</span>
-      <span class="ticker-item"><i class="bi bi-shield-check"></i> 100% SATISFACTION GUARANTEED</span>
-      <span class="ticker-item"><i class="bi bi-globe-americas"></i> WORLDWIDE EXPRESS DISPATCH</span>
-      <span class="ticker-item"><i class="bi bi-fingerprint"></i> ERGONOMIC ARCH BIOMECHANICS</span>
-      <span class="ticker-item"><i class="bi bi-gem"></i> ITALIAN FULL-GRAIN LEATHER</span>
-      <span class="ticker-item"><i class="bi bi-arrow-repeat"></i> 30-DAY HASSLE-FREE RETURNS</span>
-      <!-- Duplicate for seamless loop -->
-      <span class="ticker-item"><i class="bi bi-lightning-charge-fill"></i> NITROGEN KINETIC CORE</span>
-      <span class="ticker-item"><i class="bi bi-shield-check"></i> 100% SATISFACTION GUARANTEED</span>
-      <span class="ticker-item"><i class="bi bi-globe-americas"></i> WORLDWIDE EXPRESS DISPATCH</span>
-    </div>
-  </section>
-
-  <!-- CATEGORIES BENTO GRID -->
-  <section class="categories-bento-section">
-    <div class="section-head">
-      <div class="section-subhead">Precision Curated</div>
-      <h2 class="section-title">Architected for Every Stride</h2>
+    <!-- Mobile Horizontal Color Swatches Bar (under the shoe preview on mobile) -->
+    <div class="md:hidden flex items-center justify-center gap-4 mt-6 glass-pill px-5 py-2.5 rounded-full mx-auto w-fit z-20">
+      <span class="text-xs text-slate-400 font-medium">Colorway:</span>
+      <button onclick="setShoeThemeColor('#00E5FF')" data-swatch-color="#00E5FF" class="w-6 h-6 rounded-full bg-[#00E5FF] shadow-[0_0_10px_#00E5FF] ring-2 ring-white scale-110" title="Cyan"></button>
+      <button onclick="setShoeThemeColor('#FF6B00')" data-swatch-color="#FF6B00" class="w-6 h-6 rounded-full bg-[#FF6B00] opacity-60" title="Orange"></button>
+      <button onclick="setShoeThemeColor('#A855F7')" data-swatch-color="#A855F7" class="w-6 h-6 rounded-full bg-[#A855F7] opacity-60" title="Purple"></button>
+      <button onclick="setShoeThemeColor('#10B981')" data-swatch-color="#10B981" class="w-6 h-6 rounded-full bg-[#10B981] opacity-60" title="Green"></button>
     </div>
 
-    <div class="bento-grid">
-      <!-- Men's Collection -->
-      <a href="product.html#men" class="bento-card">
-        <img src="images/Category/Men's Category/Men's Sports/Sports Mens.jpg" alt="Men's Footwear" class="bento-card-bg">
-        <div class="bento-card-content">
-          <span class="badge-tag mb-2" style="width:fit-content;">MEN'S LAB</span>
-          <h3 class="bento-card-title">Men's Vanguard</h3>
-          <p class="bento-card-desc">Casual loafers, Goodyear-welted oxfords, and high-rebound sports trainers.</p>
-          <span class="text-info fw-bold" style="font-size:0.9rem;">Browse Collection <i class="bi bi-arrow-right"></i></span>
-        </div>
-      </a>
+  </section>
 
-      <!-- Women's Collection -->
-      <a href="product.html#women" class="bento-card">
-        <img src="images/Category/Womens Category/Women Sports/Sports Women.jpg" alt="Women's Footwear" class="bento-card-bg">
-        <div class="bento-card-content">
-          <span class="badge-tag mb-2" style="width:fit-content; background:rgba(236,72,153,0.15); color:var(--accent-pink); border-color:var(--accent-pink);">WOMEN'S ATELIER</span>
-          <h3 class="bento-card-title">Women's Silhouette</h3>
-          <p class="bento-card-desc">Architectural stilettos, cloud-knit runners, and effortless everyday flats.</p>
-          <span class="text-pink fw-bold" style="font-size:0.9rem; color:var(--accent-pink);">Browse Collection <i class="bi bi-arrow-right"></i></span>
-        </div>
-      </a>
-
-      <!-- Kids' Collection -->
-      <a href="product.html#kids" class="bento-card">
-        <img src="images/Category/Kids Category/Kid's Sports/Sports (3).jpg" alt="Kids Footwear" class="bento-card-bg">
-        <div class="bento-card-content">
-          <span class="badge-tag mb-2" style="width:fit-content; background:rgba(245,158,11,0.15); color:#f59e0b; border-color:#f59e0b;">JUNIOR FORWARD</span>
-          <h3 class="bento-card-title">Junior Explorers</h3>
-          <p class="bento-card-desc">Reinforced scuff-proof toe guards, high-bounce midsoles, and glitter party shoes.</p>
-          <span class="text-warning fw-bold" style="font-size:0.9rem;">Browse Collection <i class="bi bi-arrow-right"></i></span>
-        </div>
-      </a>
+  <!-- =========================================================================
+       3. LIVE MARQUEE TICKER BAR
+       ========================================================================= -->
+  <section class="haven-ticker-bar bg-white/[0.02] border-y border-white/[0.06] py-3.5 overflow-hidden">
+    <div class="ticker-track flex items-center gap-12 font-space text-xs sm:text-sm tracking-widest uppercase text-slate-400 font-semibold">
+      <span class="flex items-center gap-2"><i class="bi bi-lightning-charge-fill text-cyan-400"></i> NITROGEN-INFUSED KINETIC FOAM</span>
+      <span class="flex items-center gap-2"><i class="bi bi-box text-cyan-400"></i> 360° SPATIAL ORBIT VIEWER</span>
+      <span class="flex items-center gap-2"><i class="bi bi-globe2 text-cyan-400"></i> WORLDWIDE EXPRESS DISPATCH</span>
+      <span class="flex items-center gap-2"><i class="bi bi-shield-check text-cyan-400"></i> 100% AUTHENTIC GUARANTEE</span>
+      <span class="flex items-center gap-2"><i class="bi bi-recycle text-cyan-400"></i> AEROSPACE RECYCLED MESH</span>
+      <!-- Loop Items -->
+      <span class="flex items-center gap-2"><i class="bi bi-lightning-charge-fill text-cyan-400"></i> NITROGEN-INFUSED KINETIC FOAM</span>
+      <span class="flex items-center gap-2"><i class="bi bi-box text-cyan-400"></i> 360° SPATIAL ORBIT VIEWER</span>
+      <span class="flex items-center gap-2"><i class="bi bi-globe2 text-cyan-400"></i> WORLDWIDE EXPRESS DISPATCH</span>
     </div>
   </section>
 
-  <!-- FEATURED DROPS SHOWCASE (Dynamic Render from products.js) -->
-  <section class="catalog-section">
-    <div class="section-head">
-      <div class="section-subhead">Trending Now</div>
-      <h2 class="section-title">Iconic Drops of the Season</h2>
+  <!-- =========================================================================
+       4. CATEGORY BENTO DISCOVERY GRID
+       ========================================================================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="text-center mb-12">
+      <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-space">
+        Architected For Every Stride
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-space">
+        Engineered Categories
+      </h2>
     </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Men's Card -->
+      <a href="product.html#men" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-cyan-400/50 transition-all duration-500 shadow-card-3d">
+        <img src="images/Category/Men's Category/Men's Sports/Sports Mens.jpg" alt="Men's Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+          <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 w-fit mb-2">MEN'S VANGUARD</span>
+          <h3 class="text-2xl font-bold text-white font-space mb-1">Performance & Speed</h3>
+          <p class="text-slate-300 text-xs mb-3">Adaptive propulsion shanks and nitrogen pods.</p>
+          <span class="text-cyan-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Explore Series <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Women's Card -->
+      <a href="product.html#women" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-pink-400/50 transition-all duration-500 shadow-card-3d">
+        <img src="images/Category/Womens Category/Women Sports/Sports Women.jpg" alt="Women's Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+          <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-pink-400/20 text-pink-300 border border-pink-400/40 w-fit mb-2">WOMEN'S ATELIER</span>
+          <h3 class="text-2xl font-bold text-white font-space mb-1">Elegance & Cushion</h3>
+          <p class="text-slate-300 text-xs mb-3">Engineered for female athletic gait biomechanics.</p>
+          <span class="text-pink-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Explore Series <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Kids' Card -->
+      <a href="product.html#kids" class="group relative h-[380px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-amber-400/50 transition-all duration-500 shadow-card-3d">
+        <img src="images/Category/Kids Category/Kid's Sports/Sports (3).jpg" alt="Kids Collection" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 group-hover:brightness-90 transition-all duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmic-900 via-cosmic-900/40 to-transparent p-6 flex flex-col justify-end">
+          <span class="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 w-fit mb-2">JUNIOR EXPLORER</span>
+          <h3 class="text-2xl font-bold text-white font-space mb-1">Playground Agility</h3>
+          <p class="text-slate-300 text-xs mb-3">Reinforced scuff-proof toe guards and high-rebound soles.</p>
+          <span class="text-amber-300 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Explore Series <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5. FEATURED DROPS (Dynamic 3D Tilt Cards)
+       ========================================================================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      <div>
+        <div class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-space">
+          Curated Releases
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-space">
+          Trending Kinetic Drops
+        </h2>
+      </div>
+      <a href="product.html" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 text-sm font-semibold">
+        <span>View Full Catalog</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- Products Grid Container -->
     <div class="products-grid" id="featured-drops-container">
-      <!-- Injected dynamically via script -->
-    </div>
-
-    <div class="text-center mt-5">
-      <a href="product.html" class="btn-neon">
-        <span>View Full 3D Catalog</span>
-        <i class="bi bi-grid-3x3-gap"></i>
-      </a>
+      <!-- Injected via JavaScript from data/products.js -->
     </div>
   </section>
 
-  <!-- LUXURY FOOTER -->
-  <footer class="haven-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <img src="images/Logo.webp" alt="Logo" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--accent-cyan);">
-          <span class="brand-title" style="font-size:1.2rem;">SHOE HAVEN</span>
+  <!-- =========================================================================
+       6. LUXURY FOOTER
+       ========================================================================= -->
+  <footer class="bg-black/80 border-t border-white/10 pt-16 pb-12 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        <div class="md:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <img src="images/Logo.webp" alt="Logo" class="w-8 h-8 rounded-full border border-cyan-400">
+            <span class="font-space font-bold text-xl text-white">SHOE HAVEN</span>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Merging futuristic design sensibilities with biomechanical excellence. Built for movers, athletes, and pioneers.
+          </p>
         </div>
-        <p>
-          Merging futuristic design sensibilities with biomechanical excellence. Designed for movers, creators, and boundary breakers.
-        </p>
+
+        <div>
+          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Navigation</h4>
+          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+            <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
+            <li><a href="product.html" class="hover:text-cyan-300 transition-colors">Collection</a></li>
+            <li><a href="cart.html" class="hover:text-cyan-300 transition-colors">Shopping Bag</a></li>
+            <li><a href="wishlist.html" class="hover:text-cyan-300 transition-colors">Saved Wishlist</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Categories</h4>
+          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+            <li><a href="product.html#men" class="hover:text-cyan-300 transition-colors">Men's Vanguard</a></li>
+            <li><a href="product.html#women" class="hover:text-cyan-300 transition-colors">Women's Atelier</a></li>
+            <li><a href="product.html#kids" class="hover:text-cyan-300 transition-colors">Junior Explorers</a></li>
+            <li><a href="product.html#sports" class="hover:text-cyan-300 transition-colors">Nitro Sports Series</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-space font-bold text-sm tracking-wider uppercase mb-4">Spatial Care</h4>
+          <ul class="flex flex-col gap-2.5 text-xs text-slate-400">
+            <li><a href="checkout.html" class="hover:text-cyan-300 transition-colors">Express Checkout</a></li>
+            <li><a href="#" class="hover:text-cyan-300 transition-colors">3D Customizer</a></li>
+            <li><a href="#" class="hover:text-cyan-300 transition-colors">Sizing & Fit Guide</a></li>
+            <li><a href="#" class="hover:text-cyan-300 transition-colors">Global Delivery</a></li>
+          </ul>
+        </div>
       </div>
 
-      <div>
-        <h4 class="footer-col-title">Navigation</h4>
-        <ul class="footer-links-list">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="product.html">Full Catalog</a></li>
-          <li><a href="cart.html">Shopping Bag</a></li>
-          <li><a href="wishlist.html">Saved Items</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="footer-col-title">Categories</h4>
-        <ul class="footer-links-list">
-          <li><a href="product.html#men">Men's Vanguard</a></li>
-          <li><a href="product.html#women">Women's Atelier</a></li>
-          <li><a href="product.html#kids">Junior Explorers</a></li>
-          <li><a href="product.html#sports">Performance Lab</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="footer-col-title">Atelier Care</h4>
-        <ul class="footer-links-list">
-          <li><a href="checkout.html">Express Checkout</a></li>
-          <li><a href="#">Size & Fit Guide</a></li>
-          <li><a href="#">3D Customizer</a></li>
-          <li><a href="#">Authenticity Guarantee</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom-bar">
-      <span>&copy; 2026 Shoe Haven. All Rights Reserved. Engineered for Spatial Web.</span>
-      <div class="d-flex gap-3">
-        <a href="#" class="text-muted"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="text-muted"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="text-muted"><i class="bi bi-discord"></i></a>
+      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <span>&copy; 2026 SHOE HAVEN (3D EDITION). All Rights Reserved.</span>
+        <div class="flex items-center gap-4 text-slate-400">
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-instagram text-base"></i></a>
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-twitter-x text-base"></i></a>
+          <a href="#" class="hover:text-cyan-300"><i class="bi bi-discord text-base"></i></a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- MOBILE FLOATING GLASS DOCK (< 768px) -->
-  <nav class="mobile-bottom-dock">
-    <a href="index.html" class="mobile-dock-btn active">
-      <i class="bi bi-house-door"></i>
-      <span>Home</span>
+  <!-- =========================================================================
+       7. MOBILE BOTTOM GLASS DOCK (< 768px)
+       ========================================================================= -->
+  <nav class="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm glass-pill rounded-full px-6 py-2.5 flex items-center justify-between z-40 shadow-2xl">
+    <a href="index.html" class="flex flex-col items-center gap-1 text-cyan-300">
+      <i class="bi bi-house-door text-lg"></i>
+      <span class="text-[10px] font-semibold">Home</span>
     </a>
-    <a href="product.html" class="mobile-dock-btn">
-      <i class="bi bi-grid"></i>
-      <span>Shop</span>
+    <a href="product.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
+      <i class="bi bi-grid text-lg"></i>
+      <span class="text-[10px] font-medium">Shop</span>
     </a>
-    <a href="wishlist.html" class="mobile-dock-btn">
-      <i class="bi bi-heart"></i>
-      <span>Saved</span>
-      <span class="badge-pill wishlist-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    <a href="wishlist.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white relative">
+      <i class="bi bi-heart text-lg"></i>
+      <span class="text-[10px] font-medium">Saved</span>
+      <span class="wishlist-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-pink-500 text-[8px] font-bold text-white rounded-full flex items-center justify-center hidden">
+        0
+      </span>
     </a>
-    <button class="mobile-dock-btn" onclick="HavenUI.openCartDrawer()">
-      <i class="bi bi-bag"></i>
-      <span>Bag</span>
-      <span class="badge-pill cart-badge-count" style="display:none; position:absolute; top:-2px; right:6px;">0</span>
+    <button onclick="HavenUI.openCartDrawer()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white relative">
+      <i class="bi bi-bag text-lg"></i>
+      <span class="text-[10px] font-medium">Bag</span>
+      <span class="cart-badge-count absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-cyan-400 text-[8px] font-bold text-black rounded-full flex items-center justify-center hidden">
+        0
+      </span>
     </button>
   </nav>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core JavaScript Modules -->
   <script src="data/products.js"></script>
   <script src="js/app.js"></script>
   <script src="js/three-hero.js"></script>
 
-  <!-- Inject Featured Drops on Home Page -->
+  <!-- Mobile Drawer Toggle & Featured Drops Injection -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Toggle
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileDrawer = document.getElementById('mobile-menu-drawer');
+      if (mobileBtn && mobileDrawer) {
+        mobileBtn.addEventListener('click', () => {
+          mobileDrawer.classList.toggle('hidden');
+        });
+      }
+
+      // 2. Render Featured Drops on Home
       const container = document.getElementById('featured-drops-container');
-      if (!container || !window.SHOE_CATALOG) return;
+      if (container && window.SHOE_CATALOG) {
+        const featured = window.SHOE_CATALOG.slice(0, 6);
+        container.innerHTML = featured.map(shoe => {
+          const isWish = HavenStore.isInWishlist(shoe.name);
+          return `
+            <div class="shoe-card glass-card">
+              <div class="card-top-badges">
+                <span class="badge-tag">${shoe.badge || 'HOT'}</span>
+                <button class="btn-wishlist-toggle ${isWish ? 'in-wishlist' : ''}" 
+                        onclick="HavenStore.toggleWishlist(${JSON.stringify(shoe).replace(/"/g, '&quot;')}); this.classList.toggle('in-wishlist');"
+                        title="Save to Wishlist">
+                  <i class="bi ${isWish ? 'bi-heart-fill' : 'bi-heart'}"></i>
+                </button>
+              </div>
 
-      // Pick 4 curated drops
-      const featured = window.SHOE_CATALOG.slice(0, 6);
+              <div class="card-image-box">
+                <img src="${shoe.image}" alt="${shoe.name}" class="card-shoe-img" loading="lazy">
+                <div class="card-quick-overlay">
+                  <button class="btn-quick-view" onclick="HavenUI.openQuickView('${shoe.id}')">
+                    <i class="bi bi-eye"></i> Quick 3D View
+                  </button>
+                </div>
+              </div>
 
-      container.innerHTML = featured.map(shoe => {
-        const isWish = HavenStore.isInWishlist(shoe.name);
-        return `
-          <div class="shoe-card">
-            <div class="card-top-badges">
-              <span class="badge-tag">${shoe.badge || 'HOT'}</span>
-              <button class="btn-wishlist-toggle ${isWish ? 'in-wishlist' : ''}" 
-                      onclick="HavenStore.toggleWishlist(${JSON.stringify(shoe).replace(/"/g, '&quot;')}); this.classList.toggle('in-wishlist');"
-                      title="Save to Wishlist">
-                <i class="bi ${isWish ? 'bi-heart-fill' : 'bi-heart'}"></i>
-              </button>
-            </div>
+              <div>
+                <div class="card-meta-line">
+                  <span class="shoe-category-tag">${shoe.gender}'s • ${shoe.category}</span>
+                  <span class="shoe-rating"><i class="bi bi-star-fill"></i> ${shoe.rating}</span>
+                </div>
+                <h3 class="shoe-title" title="${shoe.name}">${shoe.name}</h3>
+                <div class="card-foot-pricing">
+                  <span class="shoe-price">$${shoe.price.toFixed(2)}</span>
+                  ${shoe.originalPrice ? `<span class="shoe-original-price">$${shoe.originalPrice.toFixed(2)}</span>` : ''}
+                </div>
+              </div>
 
-            <div class="card-image-box">
-              <img src="${shoe.image}" alt="${shoe.name}" class="card-shoe-img">
-              <div class="card-quick-overlay">
-                <button class="btn-quick-view" onclick="HavenUI.openQuickView('${shoe.id}')">
-                  <i class="bi bi-eye"></i> Quick 3D View
+              <div class="card-action-bar">
+                <button class="btn-add-cart" onclick="HavenStore.addToCart(${JSON.stringify(shoe).replace(/"/g, '&quot;')})">
+                  <i class="bi bi-bag-plus"></i> Add to Bag
                 </button>
               </div>
             </div>
-
-            <div>
-              <div class="card-meta-line">
-                <span class="shoe-category-tag">${shoe.gender}'s • ${shoe.category}</span>
-                <span class="shoe-rating"><i class="bi bi-star-fill"></i> ${shoe.rating}</span>
-              </div>
-              <h3 class="shoe-title" title="${shoe.name}">${shoe.name}</h3>
-              <div class="card-foot-pricing">
-                <span class="shoe-price">$${shoe.price.toFixed(2)}</span>
-                ${shoe.originalPrice ? `<span class="shoe-original-price">$${shoe.originalPrice.toFixed(2)}</span>` : ''}
-              </div>
-            </div>
-
-            <div class="card-action-bar">
-              <button class="btn-add-cart" onclick="HavenStore.addToCart(${JSON.stringify(shoe).replace(/"/g, '&quot;')})">
-                <i class="bi bi-bag-plus"></i> Add to Bag
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }).join('');
+      }
     });
   </script>
 </body>
